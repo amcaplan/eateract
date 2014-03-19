@@ -1,9 +1,15 @@
 Eateract::Application.routes.draw do
-  resources :recipes
+  resources :recipes do
+    resources :ratings, only: :show
+  end
 
-  resources :topics
+  resources :topics do
+    resources :ratings, only: :show
+  end
 
-  resources :meals
+  resources :meals do
+    resources :ratings
+  end
 
   resources :ratings
 
