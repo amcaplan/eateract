@@ -1,8 +1,8 @@
 class SessionsController < ApplicationController
   def create
     user = User.from_omniauth(env["omniauth.auth"])
+    person = Person.find_or_create_by(name: user.name, email: user.email)
     session[:user_id] = user.id
-    session[:user_img] = env["omniauth.auth"][:info][:image]
     redirect_to root_url
   end
 

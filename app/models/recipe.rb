@@ -1,4 +1,6 @@
 class Recipe < ActiveRecord::Base
+  include Rateable
+  
   has_many :meal_recipes
   has_many :meals, through: :meal_recipes
   has_many :ratings, through: :meals

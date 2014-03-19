@@ -1,9 +1,11 @@
 require 'spec_helper'
 
 describe Person do
-  let (:person) {Person.create(name: "Ariel Caplan", email: "fake_email@aol.com")}
-  let (:rating1) {Rating.create(person: person, number: 4.5)}
-  let (:rating2) {Rating.create(person: person, number: 4)}
+  let_statements
+
+  before :each do
+    person; recipe1; recipe2; topic1; meal1; meal2; mealperson1; mealperson2; rating1; rating2; rating3
+  end
 
   it "has a name" do
     expect(person.name).to eq("Ariel Caplan")
@@ -19,9 +21,10 @@ describe Person do
   end
 
   it "can average its ratings" do
-    expect(person.average_rating).to eq(4.75)
+    expect(person.average_rating).to eq(4.25)
   end
   
   it "has meals" do
+    expect(person.meals.size).to eq(2)
   end
 end

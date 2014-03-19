@@ -1,4 +1,6 @@
 class Topic < ActiveRecord::Base
+  include Rateable
+  
   has_many :topic_links
   has_many :links, through: :topic_links
 

@@ -40,3 +40,64 @@ RSpec.configure do |config|
   #     --seed 1234
   config.order = "random"
 end
+
+def let_statements
+  let (:person) {
+    p = Person.create(name: "Ariel Caplan", email: "fake_email@aol.com")
+    p.save
+    p.reload
+  }
+  let (:recipe1) {
+    r = Recipe.create(name: "steak", cuisine_type: "American", url: "example.com")
+    r.save
+    r.reload
+  }
+  let (:recipe2) {
+    r = Recipe.create(name: "French fries", cuisine_type: "American", url: "example2.com/fries")
+    r.save
+    r.reload
+  }
+  let (:topic1) {
+    t = Topic.create(name: "Global Warming")
+    t.save
+    t.reload
+  }
+  let (:meal1) {
+    m = Meal.create(time: Time.now, cuisine_type: "American")
+    m.save
+    m.topic = topic1
+    m.add_recipe(recipe1)
+    m.save
+    m.reload
+  }
+  let (:meal2) {
+    m = Meal.create(time: Time.now)
+    m.save
+    m.reload
+  }
+  let (:mealperson1) {
+    mp = MealPerson.create(host: true, host_relationship: 'self', person: person, meal: meal1)
+    mp.save
+    mp.reload
+  }
+  let (:mealperson2) {
+    mp = MealPerson.create(host: false, host_relationship: 'family', person: person, meal: meal2)
+    mp.save
+    mp.reload
+  }
+  let (:rating1) {
+    r = Rating.create(person: person, number: 4.5, meal: meal1)
+    r.save
+    r.reload
+  }
+  let (:rating2) {
+    r = Rating.create(person: person, number: 4, meal: meal2)
+    r.save
+    r.reload
+  }
+  let (:rating3) {
+    r = Rating.create(number: 4, meal: meal1)
+    r.save
+    r.reload
+  }
+end

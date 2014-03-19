@@ -1,4 +1,6 @@
 class Person < ActiveRecord::Base
+  include Rateable
+  
   has_many :users
   has_many :ratings
   has_many :meal_people

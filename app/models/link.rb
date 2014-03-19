@@ -1,4 +1,6 @@
 class Link < ActiveRecord::Base
+  include Rateable
+  
   has_many :topic_links
   has_many :topics, through: :topic_links
   has_many :meal_links

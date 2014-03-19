@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140319033025) do
+ActiveRecord::Schema.define(version: 20140319184656) do
 
   create_table "links", force: true do |t|
     t.string   "name"
@@ -74,7 +74,7 @@ ActiveRecord::Schema.define(version: 20140319033025) do
   end
 
   create_table "ratings", force: true do |t|
-    t.integer  "number"
+    t.float    "number"
     t.integer  "meal_id"
     t.integer  "person_id"
     t.datetime "created_at"
@@ -117,6 +117,8 @@ ActiveRecord::Schema.define(version: 20140319033025) do
     t.integer  "person_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "email"
+    t.string   "img_url"
   end
 
   add_index "users", ["person_id"], name: "index_users_on_person_id"
