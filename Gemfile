@@ -40,6 +40,10 @@ gem 'dotenv-rails'
 group :test, :development do
   gem 'pry'
 end
+
+group :development do
+  gem 'rails-erd'
+end
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 

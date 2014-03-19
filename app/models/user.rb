@@ -11,4 +11,6 @@ class User < ActiveRecord::Base
       user.save!
     end
   end
+
+  validates :name, presence: true
 end
