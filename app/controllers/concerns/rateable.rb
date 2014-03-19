@@ -2,14 +2,14 @@ module Rateable
   module ClassMethods
     def average_rating
       ratings = self.all.ratings
-      ratings.inject(&:+) / ratings.size
+      ratings.sum('number') / ratings.size
     end
   end
   
   module InstanceMethods
     def average_rating
-      ratings = self.ratings.map(&:number)
-      ratings.inject(&:+) / ratings.size
+      ratings = self.ratings
+      ratings.sum('number') / ratings.size
     end
   end
   
