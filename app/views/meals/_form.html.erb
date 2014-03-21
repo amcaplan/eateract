@@ -1,4 +1,21 @@
-<%= render 'guests_form' if @stage == 'guests' %>
-<%= render 'topics_form' if @stage == 'topic' %>
+<script src="bower_components/foundation/js/foundation/foundation.tabs.js"></script>
+<%= form_for @meal do |f| %>
+  <dl class="tabs" data-tab>
+    <dd class="active"><a href="#guests">Choose Guests</a></dd>
+    <dd><a href="#topic">Initiate the Conversation</a></dd>
+    <dd><a href="#food">Design the Menu</a></dd>
+  </dl>
+  <div class="tabs-content three-up">
+    <div class="content active" id="guests">
+      <%= render partial: 'guests_form', locals: {f: f} %>
+    </div>
+    <div class="content" id="topic">
+      <%= render partial: 'topics_form', locals: {f: f} %>
+    </div>
+    <div class="content" id="food">
+    </div>
+  </div>
+
+<% end %>
 
 <%= (link_to (button_tag 'Edit Later'), '/meals/stash', method: :post) unless @stage == 'guests' %>

@@ -8,7 +8,6 @@ class MealsController < ApplicationController
   def index
     if session[:user_id]
       @meals = Meal.joins(:meal_people).where("meal_people.person_id" => current_user)
-      binding.pry
     end
   end
 
@@ -19,6 +18,7 @@ class MealsController < ApplicationController
 
   # GET /meals/new
   def new
+    @meal = Meal.new
     @host = User.find(session[:user_id]).person
     if @host
       @stage = 'guests'

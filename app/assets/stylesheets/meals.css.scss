@@ -1,3 +1,13 @@
 // Place all the styles related to the Meals controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+/*
+*/
+
+dl.tabs{
+  box-shadow: 2px 2px 3px 3px #000;
+  dd {
+    border-top: 4px solid darkblue;
+    width: 33.3333333333333%;
+  }
+}
