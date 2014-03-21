@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title><%= content_for?(:title) ? yield(:title) : "foundation-rails" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : "Eateract" %></title>
 
     <%= stylesheet_link_tag    "application" %>
     <%= javascript_include_tag "vendor/modernizr" %>
@@ -12,10 +12,11 @@
   </head>
 
   <body>
+    <%= render partial: 'layouts/facebook_boilerplate' %>
     <header>
-      <%= render partial: 'layouts/facebook_widget' %>
+      <%= render partial: 'layouts/header' %>
     </header>
     <%= yield %>
-    <%= javascript_include_tag "application" %>
+    <%= render partial: 'layouts/footer' %>
   </body>
 </html>

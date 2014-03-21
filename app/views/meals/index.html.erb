@@ -1,31 +1,9 @@
-<h1>Listing meals</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Time</th>
-      <th>Topic</th>
-      <th>Cuisine type</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @meals.each do |meal| %>
-      <tr>
-        <td><%= meal.time %></td>
-        <td><%= meal.topic %></td>
-        <td><%= meal.cuisine_type %></td>
-        <td><%= link_to 'Show', meal %></td>
-        <td><%= link_to 'Edit', edit_meal_path(meal) %></td>
-        <td><%= link_to 'Destroy', meal, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="large-12 medium-8 columns">
+  <h1>Your Meals</h1>
+  <h3 class="subheader">Save the dates!</h3>
+  <ul class="small-block-grid-2 large-block-grid-4">
+  <%= render @meals %>
+  </ul>
+</div>
 
 <br>
-
-<%= link_to 'New Meal', new_meal_path %>

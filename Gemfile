@@ -43,6 +43,7 @@ end
 
 group :test do
   gem 'rspec-rails'
+  gem 'rack_session_access'
 end
 
 group :development do

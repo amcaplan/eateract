@@ -1,0 +1,22 @@
+<%= form_tag "/meals/submit-guests", method: :post do %>
+  <div class="guests">
+    <%= hidden_field_tag(:"guests[][name]", @host.name) %>
+    <%= hidden_field_tag(:"guests[][email]", @host.email) %>
+    <%= label_tag :"guests[]", "Who are you inviting?" %><br>
+    <% 5.times do %>
+      <div class="small-4 columns">
+        Name: <%= text_field_tag :"guests[][name]" %>
+      </div>
+      <div class="small-4 columns">
+        Email: <%= text_field_tag :"guests[][email]" %>
+      </div>
+      <div class="small-4 columns">
+        Relationship: <%= text_field_tag :"guests[][relationship]" %><br>
+      </div>
+    <% end %>
+    <!-- guest tags -->
+  </div>
+  <div class="actions small-centered">
+    <%= submit_tag "Add guests", class: :"medium button" %>
+  </div>
+<% end %>

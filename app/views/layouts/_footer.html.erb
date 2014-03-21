@@ -1,0 +1,10 @@
+<%= javascript_include_tag "application" %>
+<footer class="small-12 columns small-centered small-text-center panel">
+  <% if session[:user_id] %>
+    <% unless request.fullpath.include?('meal') %>
+      <%= button_tag link_to('Start a New Meal', new_meal_path), class: [:button] %>
+    <% end %>
+  <% else %>
+    <h4>Sign in with Facebook to begin!</h4>
+  <% end %>
+</footer>
