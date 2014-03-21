@@ -1,5 +1,5 @@
 <%= javascript_include_tag "application" %>
-<footer class="small-12 columns small-centered small-text-center panel">
+<footer class="small-12 columns small-centered small-text-center">
   <% if session[:user_id] %>
     <% unless request.fullpath.include?('meal') %>
       <%= button_tag link_to('Start a New Meal', new_meal_path), class: [:button] %>

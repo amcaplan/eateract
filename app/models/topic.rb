@@ -1,7 +1,7 @@
 class Topic < ActiveRecord::Base
   include Rateable
   
-  has_many :topic_links
+  has_many :topic_links, dependent: :destroy
   has_many :links, through: :topic_links
 
   has_many :meals

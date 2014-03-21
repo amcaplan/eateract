@@ -1,16 +1,16 @@
 class Meal < ActiveRecord::Base
   include Rateable
   
-  has_many :meal_people
+  has_many :meal_people, dependent: :destroy
   has_many :people, through: :meal_people
   has_many :users, through: :people
 
   has_many :ratings
 
-  has_many :meal_links
+  has_many :meal_links, dependent: :destroy
   has_many :links, through: :meal_links
 
-  has_many :meal_recipes
+  has_many :meal_recipes, dependent: :destroy
   has_many :recipes, through: :meal_recipes
 
   belongs_to :topic
