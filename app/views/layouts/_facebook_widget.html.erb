@@ -4,6 +4,6 @@
       <span class="radius secondary label">Welcome <strong><%= current_user.name %></strong>!</span>
       <%= link_to "Sign out", signout_path, id: "sign_out", class: "alert label" %>
   <% else %>
-    <%= link_to (image_tag "https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-ash3/t39.2178-6/851571_563434920377416_190663183_n.png", width: "93px", height: "43px"), "/auth/facebook", id: "sign_in" %>
+    <%= link_to (image_tag "https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-ash3/t39.2178-6/851571_563434920377416_190663183_n.png", width: "93px", height: "43px"), "/auth/facebook", id: "sign_in", style:"padding:0" %>
   <% end %>
 </div>

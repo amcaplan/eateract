@@ -6,9 +6,8 @@ var displayLinks = function(){
     var topicDescriptions = $(".topic-descriptions");
     var topicDescriptionsContainer = $('.topic-descriptions-container');
     if (topicID == "") {
-      topicLinks.slideUp();
-      topicLinks.html("");
-      topicDescriptionsContainer.hide();
+      topicLinks.slideUp().html("");
+      topicDescriptionsContainer.slideUp().find(".topic-descriptions").html("");
     }
     else {
       $.getJSON("../../topics/" + topicID + "/links", function(response){
@@ -17,10 +16,10 @@ var displayLinks = function(){
         var currentSummary = "";
         output += "<h4>(We recommend choosing about 3 links to send to your friends.)</h4><br /><p>";
         $.each(response, function(index, link){
-          output += '<div><p><input id="link'+index+'" name="links[]" type="checkbox" value="'+link.id+'" />'
+          output += '<div class="link-option"><p><input id="link'+index+'" name="links[]" type="checkbox" value="'+link.id+'" />'
           output += ' <a href="' + link.url + '" target="_blank">';
           output += link.name + "</a>";
-          output += ' <a id="show-' + index + '" href="#" class="hide-for-large-up">(+ Show summary)</a>'
+          output += ' <span id="show-' + index + '" class="hide-for-large-up">(+ Show summary)</span>'
           currentSummary = '<div class="hidden index-' + index + '">' + link.summary + '</div></div>';
           summary += currentSummary;
           output += '<div class="hide-for-large-up">' + currentSummary + '</div></p>';
@@ -28,25 +27,23 @@ var displayLinks = function(){
         output += "</p>";
         topicLinks.html(output).slideDown();
         topicDescriptionsContainer.slideDown();
-        topicDescriptions.append(summary).slideDown();
+        topicDescriptions.append($(summary)).slideDown();
       });
     }
-    topicLinks.on("mouseover", "a", function(){
+    topicLinks.on("mouseover", ".link-option", function(){
       if ($(window).width() > 1025) {
-        var id = $(this).parent().find("input").attr("id").substring(4);
+        var id = $(this).find("input").attr("id").substring(4);
         console.log(topicDescriptionsContainer.find(".index-" + id));
         topicDescriptionsContainer.find(".index-" + id).show();
       }
     });
-    topicLinks.on("mouseleave", "a", function(){
+    topicLinks.on("mouseleave", ".link-option", function(){
       if ($(window).width() > 1025) {
-        var id = $(this).parent().find("input").attr("id").substring(4);
+        var id = $(this).find("input").attr("id").substring(4);
         topicDescriptionsContainer.find(".index-" + id).hide();
       }
     });
-    topicLinks.on("click", 'a[href="#"]', function(event){
-      event.stopPropagation();
-      event.preventDefault();
+    topicLinks.on("click", 'span', function(event){
       var id = $(this).attr("id").substring(5);
       $(this).parent().parent().parent().find(".index-"+id).slideToggle(100);
       if ($(this).text() == "(+ Show summary)") {
@@ -69,11 +66,13 @@ var tabAround = function(){
 var checkWidth = function() {
     var windowSize = $(window).width();
     if (windowSize > 1025) {
-      $(".tabs").addClass("tabs").removeClass("accordion")
+      $(".accordion").addClass("tabs").removeClass("accordion")
+      $("form").removeClass("border-top")
       $(".content").detach().appendTo($(".tabs-content"));
       $("input[type=submit]").detach().appendTo($(".tabs-content"));
     } else {
       $(".tabs").addClass("accordion").removeClass("tabs")
+      $("form").addClass("border-top")
     }
 }
 
