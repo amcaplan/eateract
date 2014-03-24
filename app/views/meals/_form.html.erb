@@ -1,4 +1,3 @@
-<script src="bower_components/foundation/js/foundation/foundation.tabs.js"></script>
 <%= form_for @meal do |f| %>
   <dl class="tabs" data-tab>
     <dd class="active"><a href="#guests">Choose Guests</a></dd>
@@ -15,7 +14,7 @@
     <div class="content" id="food">
       <%= render partial: 'menu_form', locals: {f: f} %>
     </div>
-    <%= f.submit "Save meal", class: "button alert small-6 columns", style: "border: 4px solid white" %>
     <%= f.submit "Stash changes", class: "button alert small-6 columns" , style: "border: 4px solid white" %>
+    <%= f.submit "Save meal", class: "button alert small-6 columns", style: "border: 4px solid white" %>
   </div>
 <% end %>

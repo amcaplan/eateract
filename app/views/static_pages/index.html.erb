@@ -1,9 +1,17 @@
 <div class="small-10 columns small-centered small-text-center">
-  <%= image_tag "logo_color.png", height: "500px", width: "500px" %>
-  <h3><em>Eating. Interacting. Discovering Ourselves.</em></h3>
+  <div class="small-12 medium-10 large-8 columns small-centered">
+    <%= image_tag "logo_color.png", height: "100%", width: "100%" %>
+  </div>
+  <h3><em>Eating. &#8203;Interacting. &#8203;Discovering Ourselves.</em></h3>
   <div class="panel">
     <p>
-      Eateract is all about <em>food, philosophy, and fun</em>.
+      Eateract is all about <em>food, friends, and fun</em>.
     </p>
+    <% if session[:user_id] %>
+      <a class="button large" href="/meals/new">Start a new meal!</a>
+    <% else %>
+      <%= link_to (image_tag "https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-prn1/t39.2178-6/851559_525052150897756_1657976780_n.png"), "/auth/facebook", id: "sign_in" %><br>
+      We will never post to Facebook without your permission.
+    <% end %>
   </div>
 </div>
