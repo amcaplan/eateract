@@ -5,7 +5,7 @@
     <dd><a href="#topic">Initiate the Conversation</a></dd>
     <dd><a href="#food">Design the Menu</a></dd>
   </dl>
-  <div class="tabs-content three-up">
+  <div class="tabs-content">
     <div class="content active" id="guests">
       <%= render partial: 'guests_form', locals: {f: f} %>
     </div>
@@ -13,9 +13,9 @@
       <%= render partial: 'topics_form', locals: {f: f} %>
     </div>
     <div class="content" id="food">
+      <%= render partial: 'menu_form', locals: {f: f} %>
     </div>
+    <%= f.submit "Save meal", class: "button alert small-6 columns", style: "border: 4px solid white" %>
+    <%= f.submit "Stash changes", class: "button alert small-6 columns" , style: "border: 4px solid white" %>
   </div>
-
 <% end %>
-
-<%= (link_to (button_tag 'Edit Later'), '/meals/stash', method: :post) unless @stage == 'guests' %>

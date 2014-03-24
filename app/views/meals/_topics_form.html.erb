@@ -1,3 +1,11 @@
-<%= form_tag "/meals/submit-guests", method: :post do %>
-  inside the topic form
-<% end %>
+<div class="small-10 large-4 columns small-centered">
+  <div class="topic-title-select">
+    <%= select("meal", "topic_id", Topic.all.map{|topic| [topic.name, topic.id]}, prompt: "Select a topic") %>
+  </div>
+  <div class="topic-links">
+  </div>
+</div>
+<div class="tab-around-links small-centered small-4 columns">
+  <a href="#goto-guests" class="tab-around"><button class="small-6 columns"><- Back</button></a>
+  <a href="#goto-food" class="tab-around"><button class="small-6 columns">Continue -></button></a>
+</div>

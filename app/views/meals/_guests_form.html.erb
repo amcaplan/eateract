@@ -1,17 +1,19 @@
   <div class="guests">
-    Who are you inviting?<br>
-    <% 5.times do %>
+    <h3>Who are you inviting?</h3>
+    <% 5.times do |i| %>
       <%= f.fields_for(Person.new) do |ff| %>
         <div class="small-4 columns">
-          Name: <%= ff.text_field :name %>
+          Name: <%= ff.text_field :name, name: "person[#{i}][name]" %>
         </div>
         <div class="small-4 columns">
-          Email: <%= ff.text_field :email %>
+          Email: <%= ff.text_field :email, name: "person[#{i}][email]" %>
         </div>
         <div class="small-4 columns">
-          Relationship: <%= text_field_tag :"guest[host_relationship]" %><br>
+          Relationship: <%= select_tag(:host_relationship, options_for_select(['friend','relative','neighbor','student','teacher','clergy']), name: "person[#{i}][host_relationship]") %><br>
         </div>
       <% end %>
     <% end %>
-    <br><a href="#topic">Continue</a>
+    <div class="tab-around-links small-2 columns small-centered">
+      <a href="#goto-topic" class="tab-around"><button class="small-12 columns">Continue -></button></a>
+    </div>
   </div>

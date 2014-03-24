@@ -12,6 +12,18 @@ class TopicsController < ApplicationController
   def show
   end
 
+  # GET /topics/1/links
+  def get_links
+    topic = Topic.find(params[:topic_id])
+    respond_to do |format|
+      if topic
+        format.json { render json: topic.links, location: @topic }
+      else
+        format.json { render json: @topic.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # GET /topics/new
   def new
     @topic = Topic.new

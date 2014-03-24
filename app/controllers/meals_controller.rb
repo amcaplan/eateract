@@ -61,6 +61,7 @@ class MealsController < ApplicationController
   # POST /meals
   # POST /meals.json
   def create
+    raise params.inspect
     @meal = Meal.new(meal_params)
 
     respond_to do |format|
@@ -77,6 +78,7 @@ class MealsController < ApplicationController
   # PATCH/PUT /meals/1
   # PATCH/PUT /meals/1.json
   def update
+    raise params.inspect
     respond_to do |format|
       if @meal.update(meal_params)
         format.html { redirect_to @meal, notice: 'Meal was successfully updated.' }
@@ -86,11 +88,6 @@ class MealsController < ApplicationController
         format.json { render json: @meal.errors, status: :unprocessable_entity }
       end
     end
-  end
-
-  def stash
-    session[:meal_id] = nil
-    redirect_to meals_url
   end
 
   # DELETE /meals/1

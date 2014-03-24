@@ -19,6 +19,8 @@ Eateract::Application.routes.draw do
 
   match 'meals/stash', to: 'meals#stash', via: [:post]
 
+  match 'topics/:topic_id/links', to: 'topics#get_links', via: [:get]
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
