@@ -57,11 +57,16 @@ form.border-top {
   border-top: 4px solid darkblue
 }
 
-.menu-container h1{
-  font-family: 'Italianno', cursive;
-}
-
 .content.active {
  box-shadow: 0px -4px 5px 0px #444; 
  z-index: 8;
+}
+
+.menu.panel h1 {
+  text-decoration: underline;
+  font-family: 'Italianno', cursive;
+}
+
+.menu.panel {
+  font-family: 'Italianno', cursive;
 }

@@ -78,6 +78,7 @@ var checkWidth = function() {
 var tableize = function(queryString) {
   $.getJSON("../../recipes/search/" + queryString, function(response) {
     $(".recipes-attribution").html(response.attribution.html);
+    
     var tr = $('<tr class="recipe-info">'+
       '<td class="recipe-checkbox"></td>' +
       '<td class="recipe-image"></td>' +
@@ -87,6 +88,7 @@ var tableize = function(queryString) {
       '<td class="recipe-rating"></td>' +
       '<td class="recipe-source"></td>' +
     '</tr>');
+
     $.each(response.matches, function(index, recipe) {
       new_tr = tr.clone();
       var checkboxName = "recipe" + recipe.id;
@@ -108,9 +110,27 @@ var tableize = function(queryString) {
       if (recipe.attributes.cuisine) {
         new_tr.find(".recipe-cuisine").html(recipe.attributes.cuisine[0]);
       }
-      new_tr.find(".recipe-rating").html(recipe.rating);
-      new_tr.find(".recipe-source").html(recipe.sourceDisplayName);
-      new_tr.appendTo($("tbody"))
+      if (recipe.rating) {
+        new_tr.find(".recipe-rating").html(recipe.rating);
+      }
+      if (recipe.sourceDisplayName) {
+        new_tr.find(".recipe-source").html(recipe.sourceDisplayName);
+      }
+      new_tr.appendTo($("tbody"));
+      new_tr.find("input").click( function(){
+        var checkbox = $(this);
+        var recipeID = checkbox.prop("value");
+        if ($(this).is(':checked')) {
+          var recipeName = checkbox.parent().parent().find(".recipe-name").text()
+          var newMenuItem = $(".menu.item.hidden").clone()
+          newMenuItem.prop("id", checkbox.prop("id"));
+          newMenuItem.append(checkbox.clone().addClass("hidden"));
+          newMenuItem.append(recipeName);
+          newMenuItem.appendTo($(".menu.panel")) && newMenuItem.fadeIn() && newMenuItem.removeClass("hidden");
+        } else {
+          $(".menu.panel").find($("#" + recipeID)).fadeOut(function() {$(this).remove()});
+        }
+      });
     }) && $(".recipe-container").slideDown();
   });
 };
@@ -122,7 +142,7 @@ var displayRecipes = function(){
     
     $(".recipe-querier").off("click.first");
     $(".recipe-querier").on("click.subsequent", "#search-recipes", function() {
-      $(".recipes-table").find(".recipe-info").detach().appendTo($(".hidden-recipes"));
+      // $(".recipes-table").find(".recipe-info").detach().appendTo($(".hidden-recipes"));
       var queryString = $("#recipe_query").val();
       tableize(queryString);
     });
