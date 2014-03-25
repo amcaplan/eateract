@@ -75,6 +75,14 @@ var checkWidth = function() {
     }
 }
 
+var removeMenuItems = function(link) {
+  console.log(this);
+  var parentDiv = $(this).parent();
+  var parentID = parentDiv.prop("id");
+  $("input[type=checkbox]").filter("#" + parentID).prop("checked", false);
+  parentDiv.fadeOut(parentDiv.remove);
+}
+
 var tableize = function(queryString) {
   $.getJSON("../../recipes/search/" + queryString, function(response) {
     $(".recipes-attribution").html(response.attribution.html);
@@ -90,7 +98,7 @@ var tableize = function(queryString) {
     '</tr>');
 
     $.each(response.matches, function(index, recipe) {
-      new_tr = tr.clone();
+      var new_tr = tr.clone();
       var checkboxName = "recipe" + recipe.id;
       var checked = "";
       var existingBox = $(".hidden-recipes").find('#' + checkboxName);
@@ -124,9 +132,10 @@ var tableize = function(queryString) {
           var recipeName = checkbox.parent().parent().find(".recipe-name").text()
           var newMenuItem = $(".menu.item.hidden").clone()
           newMenuItem.prop("id", checkbox.prop("id"));
-          newMenuItem.append(checkbox.clone().addClass("hidden"));
-          newMenuItem.append(recipeName);
+          newMenuItem.prepend(checkbox.clone().addClass("hidden"));
+          newMenuItem.prepend(recipeName);
           newMenuItem.appendTo($(".menu.panel")) && newMenuItem.fadeIn() && newMenuItem.removeClass("hidden");
+          newMenuItem.find(".remove-menu-item").on("click", newMenuItem.find("remove-menu-item"), removeMenuItems);
         } else {
           $(".menu.panel").find($("#" + recipeID)).fadeOut(function() {$(this).remove()});
         }
