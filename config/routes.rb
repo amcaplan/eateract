@@ -1,25 +1,21 @@
 Eateract::Application.routes.draw do
-  resources :recipes do
-    resources :ratings, only: :show
-  end
-
-  resources :topics do
-    resources :ratings, only: :show
-  end
-
   resources :meals do
     resources :ratings
   end
 
+  resources :topics, only: [:index, :show] do
+    resources :ratings, only: :show
+  end
+  match 'topics/:topic_id/links', to: 'topics#get_links', via: [:get]
+
+  # Routes for login
   match 'auth/:provider/callback', to: 'sessions#create', via: [:get, :post]
   match 'auth/failure', to: redirect('/'), via: [:get, :post]
   match 'signout', to: 'sessions#destroy', as: 'signout', via: [:get, :post]
 
-  match 'meals/submit-guests', to: 'meals#submit_guests', via: [:post]
-
-  match 'meals/stash', to: 'meals#stash', via: [:post]
-
-  match 'topics/:topic_id/links', to: 'topics#get_links', via: [:get]
+  # Routes for recipe retrieval
+  match 'recipes/search/:query', to: 'recipes#search', via: [:get]
+  match 'recipes/:recipe_id', to: 'recipes#get_details', via: [:get]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

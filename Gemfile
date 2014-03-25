@@ -52,6 +52,10 @@ end
 
 gem 'foundation-rails'
 
+gem 'yummly'
+
+gem 'chronic'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 

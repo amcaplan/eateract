@@ -14,3 +14,36 @@
 
  *= require_tree .
  */
+
+ body {
+  background: #a9e4f7 !important; /* Old browsers */
+  background: -moz-linear-gradient(top,  #a9e4f7 0%, #0fb4e7 100%) !important; /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a9e4f7), color-stop(100%,#0fb4e7)) !important; /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #a9e4f7 0%,#0fb4e7 100%) !important; /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #a9e4f7 0%,#0fb4e7 100%) !important; /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #a9e4f7 0%,#0fb4e7 100%) !important; /* IE10+ */
+  background: linear-gradient(to bottom,  #a9e4f7 0%,#0fb4e7 100%) !important; /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a9e4f7', endColorstr='#0fb4e7',GradientType=0 ) !important; /* IE6-9 */
+  background-attachment: fixed !important;
+
+ }
+
+ form {
+  background: #FFF;
+ }
+
+ .panel {
+  box-shadow: 0px 0px 12px 1px #000;
+ }
+
+ footer#footer {
+  padding-top: 10px;
+ }
+
+ .clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
