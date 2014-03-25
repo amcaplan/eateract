@@ -70,3 +70,25 @@ form.border-top {
 .menu.panel {
   font-family: 'Italianno', cursive;
 }
+
+input#recipe_query, a#search-recipes {
+  height: 53px;
+}
+
+.menu.item {
+  font-size: 1.6em;
+}
+
+@media only screen and (max-width: 760px) {
+  .recipes-table th:nth-child(1n+4),
+  .recipes-table td:nth-child(1n+4) {
+    display: none;
+  }
+  .recipes-table th:last-child,
+  .recipes-table td:last-child {
+    display: table-cell;
+  }
+  .menu.item {
+    font-size: 1.3em;
+  }
+}

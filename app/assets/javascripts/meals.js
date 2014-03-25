@@ -111,7 +111,7 @@ var tableize = function(queryString) {
       if (recipe.smallImageUrls[0]) {
         new_tr.find(".recipe-image").html('<img src="'+recipe.smallImageUrls[0]+'">');
       }
-      new_tr.find(".recipe-name").html(recipe.recipeName);
+      new_tr.find(".recipe-name").html('<a class="recipe-link">' + recipe.recipeName + '</a>');
       if (recipe.attributes.course) {
         new_tr.find(".recipe-course").html(recipe.attributes.course);
       }
@@ -140,6 +140,12 @@ var tableize = function(queryString) {
           $(".menu.panel").find($("#" + recipeID)).fadeOut(function() {$(this).remove()});
         }
       });
+      new_tr.find(".recipe-link").on("click", function() {
+        $.getJSON("../../recipes/" + recipe.id, function(response){
+          console.log(response.json);
+          window.open(response.json.source.sourceRecipeUrl, '_blank');
+        });
+      });
     }) && $(".recipe-container").slideDown();
   });
 };
@@ -151,7 +157,7 @@ var displayRecipes = function(){
     
     $(".recipe-querier").off("click.first");
     $(".recipe-querier").on("click.subsequent", "#search-recipes", function() {
-      // $(".recipes-table").find(".recipe-info").detach().appendTo($(".hidden-recipes"));
+      $(".recipes-table").find(".recipe-info").detach().appendTo($(".hidden-recipes"));
       var queryString = $("#recipe_query").val();
       tableize(queryString);
     });
@@ -159,8 +165,10 @@ var displayRecipes = function(){
 
   // Also accept user hitting ENTER
   $(".recipe-querier").on("keypress", "#recipe_query", function(event){
+    event.stopPropagation();
     var code = event.which;
     if(code == 13) {
+      event.preventDefault();
       $(".recipe-querier").find("#search-recipes").trigger("click");
     }
   });

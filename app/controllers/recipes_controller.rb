@@ -16,11 +16,11 @@ class RecipesController < ApplicationController
   end
 
   # GET /recipes/1.json
-  def details
-    json_recipe = Yummly.search(params[:recipe_id])
+  def get_details
+    json_recipe = Yummly.find(params[:recipe_id])
     if json_recipe
       respond_to do |format|
-        format.json { render json_recipe, status: 200}
+        format.json { render json: json_recipe, status: 200}
       end
     else
       respond_to do |format|
