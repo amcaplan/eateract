@@ -9,11 +9,26 @@
           Email: <%= ff.text_field :email, name: "person[][email]" %>
         </div>
         <div class="medium-4 small-12 columns">
-          Relationship: <%= select_tag(:host_relationship, options_for_select(['friend','relative','neighbor', 'coworker', 'student','teacher','clergy', 'other']), name: "person[][host_relationship]") %><br>
+          Relationship: <%= select_tag(:host_relationship, options_for_select(['friend','relative','neighbor', 'coworker', 'student','teacher','clergy', 'other']), name: "person[][host_relationship]", prompt: "Who is s/he to you?") %><br>
         </div>
         <%= raw("<hr>") unless i == 4 %>
       <% end %>
     <% end %>
+    <a class="add-guest">(+) Add another guest</a>
+    <div class="hidden new-guest-form">
+      <hr>
+      <%= f.fields_for(Person.new) do |ff| %>
+        <div class="medium-4 small-12 columns">
+          Name: <%= ff.text_field :name, name: "person[][name]" %>
+        </div>
+        <div class="medium-4 small-12 columns">
+          Email: <%= ff.text_field :email, name: "person[][email]" %>
+        </div>
+        <div class="medium-4 small-12 columns">
+          Relationship: <%= select_tag(:host_relationship, options_for_select(['friend','relative','neighbor', 'coworker', 'student','teacher','clergy', 'other']), name: "person[][host_relationship]") %><br>
+        </div>
+      <% end %>
+    </div>
     <div class="tab-around-links small-7 medium-4 columns small-centered">
       <a href="#goto-topic" class="tab-around"><button class="small-12 columns">Continue -></button></a>
     </div>

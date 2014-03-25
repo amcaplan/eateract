@@ -113,7 +113,7 @@ var tableize = function(queryString) {
       new_tr.appendTo($("tbody"))
     }) && $(".recipe-container").slideDown();
   });
-}
+};
 
 var displayRecipes = function(){
   $(".recipe-querier").on("click.first", "#search-recipes", function() {
@@ -127,12 +127,19 @@ var displayRecipes = function(){
       tableize(queryString);
     });
   });
-}
+
+  // Also accept user hitting ENTER
+  $(".recipe-querier").on("keypress", "#recipe_query", function(event){
+    var code = event.which;
+    if(code == 13) {
+      $(".recipe-querier").find("#search-recipes").trigger("click");
+    }
+  });
+};
 
 var fixBoxHeight = function() {
   boxes = $('.meal-li');
   boxes.height("auto");
-  console.log(boxes.height());
   maxHeight = Math.max.apply(
   Math, boxes.map(function() {
     return $(this).height();
@@ -140,11 +147,24 @@ var fixBoxHeight = function() {
   boxes.height(maxHeight);
 };
 
+var addGuestHere = function() {
+  $(this).before($('.new-guest-form').clone());
+  $('.new-guest-form:first').fadeIn(function(){
+    $('.new-guest-form:first').removeClass("new-guest-form");
+  });
+};
+
+var enableAddGuestLink = function() {
+  $('.add-guest').on("click", addGuestHere)
+};
+
 $(document).ready(function(){
+  enableAddGuestLink();
   displayLinks();
   tabAround();
   checkWidth();
   displayRecipes();
+
   $(window).resize(function(){
     checkWidth();
   });
