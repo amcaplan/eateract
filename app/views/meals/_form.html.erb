@@ -8,13 +8,16 @@
     <div class="content active" id="guests">
       <%= render partial: 'guests_form', locals: {f: f} %>
     </div>
-    <div class="content" id="topic">
+    <div class="content" id="topic" data-equalizer-watch>
       <%= render partial: 'topics_form', locals: {f: f} %>
     </div>
     <div class="content" id="food">
       <%= render partial: 'menu_form', locals: {f: f} %>
     </div>
+    <div class="content" id="time">
+      <%= render partial: 'time_form', locals: {f: f} %>
+    </div>
     <%= f.submit "Stash changes", class: "button alert small-6 columns" , style: "border: 4px solid white" %>
-    <%= f.submit "Save meal", class: "button alert small-6 columns", style: "border: 4px solid white" %>
+    <input class="button alert small-6 columns" style="border: 4px solid white" type="submit" value="Save meal" data-reveal-id="myModal" data-reveal>
   </div>
 <% end %>

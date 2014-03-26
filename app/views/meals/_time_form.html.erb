@@ -1,0 +1,20 @@
+<div id="myModal" class="reveal-modal" data-reveal>
+  <h2>You're almost done!</h2>
+  <div class="small-10 large-6 columns">
+    <p class="lead">Choose a date for your meal...</p>
+    <%= date_field(:meal, :time) %>
+  </div>
+  <div class="small-10 large-6 columns">
+    <p class="lead">...and a time...</p>
+    <%= time_field(:meal, :time) %>
+  </div>
+  <div class="small-10 large-6 columns">
+    <p class="lead small-text-center">...and you're done!</p>
+  </div>
+  <div class="small-10 large-6 columns small-text-center">
+    <a class="button alert large pre-submit">FINISHED!</a>
+  </div>
+
+  <%= f.submit "Submit meal", class: "hidden", id: "the-actual-submit-button", style: "border: 4px solid white" %>
+  <a class="close-reveal-modal">&#215;</a>
+</div>

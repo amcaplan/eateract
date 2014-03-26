@@ -195,12 +195,19 @@ var enableAddGuestLink = function() {
   $('.add-guest').on("click", addGuestHere)
 };
 
+var enableSecretSubmit = function() {
+  $(".pre-submit").click(function(){
+    $("#the-actual-submit-button").trigger("click");
+  });
+}
+
 $(document).ready(function(){
   enableAddGuestLink();
   displayLinks();
   tabAround();
   checkWidth();
   displayRecipes();
+  enableSecretSubmit();
 
   $(window).resize(function(){
     checkWidth();

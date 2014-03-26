@@ -1,21 +1,22 @@
-<div class="small-12 columns small-centered data-equalizer">
+<div class="small-12 columns small-centered" data-equalizer>
   <div class="topic-title-select small-10 large-4 columns small-centered">
     <%= select("meal", "topic_id", Topic.all.map{|topic| [topic.name, topic.id]}, prompt: "Select a topic") %>
   </div>
   <div class="topic-links small-12 large-6 columns left">
   </div>
 </div>
-<div class="show-for-large-up data-equalizer">
-  <div class="hidden small-12 large-6 columns right topic-descriptions-container data-equalizer">
+<div class="show-for-large-up" data-equalizer>
+  <div class="hidden small-12 large-6 columns right topic-descriptions-container" data-equalizer>
     <h4>Hover over links to see descriptions here (or click them to open in a new tab):</h4>
     <div class="show-for-medium-up">
-      <div class="topic-descriptions panel data-equalizer">
+      <div class="topic-descriptions panel" data-equalizer>
       </div>
     </div>
   </div>
 </div>
-<div class="small-12 columns"></div>
-<div class="tab-around-links small-centered small-text-center row">
-  <a href="#goto-guests" class="tab-around button"><- Back</a>
-  <a href="#goto-food" class="tab-around button">Continue -></a>
+<div class="small-12 columns">
+  <div class="tab-around-links small-centered small-text-center row">
+    <a href="#goto-guests" class="tab-around button"><- Back</a>
+    <a href="#goto-food" class="tab-around button">Continue -></a>
+  </div>
 </div>

@@ -17,7 +17,6 @@
 //= require_tree .
 
 //= require facebook
-$(function(){ $(document).foundation(); });
 
 // $(window).bind("load", function () {
 //     var footer = $("#footer");
@@ -31,3 +30,7 @@ $(function(){ $(document).foundation(); });
 //         });
 //     }
 // });
+
+$(document).ready(function(){
+  $(".button").addClass("radius");
+});

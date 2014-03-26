@@ -5,7 +5,7 @@
         <h3>Meal Organized by <%= meal.host ? meal.host.name : "<organizer>" %></h3>
       </div>
         <%= meal.time_string %>, discussing <strong><%= meal.topic ? meal.topic.name : "an undetermined topic" %></strong>
-        over <%= meal.cuisine_type ? meal.cuisine_type : "food" %> with <%= meal.active_guest_count %> participants
+        with <%= meal.active_guest_count %> participants
         <% if meal.num_guests_attending == 0 %>
           (no responses yet)
         <% else %>
