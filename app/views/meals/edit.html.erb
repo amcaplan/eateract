@@ -3,3 +3,8 @@
 
   <%= render 'form' %>
 </div>
+
+<script type="text/javascript">
+  var checkedLinks = <%= @link_ids ? raw(@link_ids.map(&:to_s)) : '[]' %>;
+  var recipesInfo = <%= raw(@recipes ? @recipes.to_json : '{}') %>;
+</script>

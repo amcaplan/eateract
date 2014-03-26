@@ -1,8 +1,13 @@
   <div class="guests small-11 large-10 columns small-centered">
     <h3>Who are you inviting?</h3>
-    <% 3.times do |i| %>
+    <%= f.fields_for(@host) do |ff| %>
+      <%= f.hidden_field :name, name: "person[][name]", value: @host.name %>
+      <%= f.hidden_field :name, name: "person[][email]", value: @host.email %>
+      <%= f.hidden_field :name, name: "person[][host_relationship]", value: "self"%>
+    <% end %>
+    <% @people.each_with_index do |person, index| %>
       <div class="row">
-      <%= f.fields_for(Person.new) do |ff| %>
+      <%= f.fields_for(person) do |ff| %>
         <div class="medium-4 small-12 columns">
           Name: <%= ff.text_field :name, name: "person[][name]" %>
         </div>
@@ -10,9 +15,15 @@
           Email: <%= ff.text_field :email, name: "person[][email]" %>
         </div>
         <div class="medium-4 small-12 columns">
-          Relationship: <%= select_tag(:host_relationship, options_for_select(['friend','relative','neighbor', 'coworker', 'student','teacher','clergy', 'other']), name: "person[][host_relationship]", prompt: "Who is s/he to you?") %><br>
+          <% mp = person.meal_people.where(meal: @meal).first %>
+          Relationship: <%= select_tag(:host_relationship,
+            options_for_select(['friend','relative','neighbor',
+              'coworker', 'student','teacher','clergy', 'other'],
+                [(mp.host_relationship if mp)]),
+              name: "person[][host_relationship]",
+              prompt: "Who is s/he to you?") %><br>
         </div>
-        <%= raw("<hr>") unless i == 2 %>
+        <%= raw("<hr>") unless index == @people.length - 1 %>
       <% end %>
       </div>
     <% end %>

@@ -24,7 +24,7 @@ class Meal < ActiveRecord::Base
   end
 
   def host
-    people.where("meal_people.host" => true)
+    people.where("meal_people.host_relationship" => "self")
   end
 
   def host=(new_host)
@@ -33,7 +33,7 @@ class Meal < ActiveRecord::Base
   end
 
   def hosted_by?(person)
-    person.id == people.where("meal_people.host" => true).pluck(:id).first
+    person.id == people.where("meal_people.host_relationship" => "self").pluck(:id).first
   end
 
   def add_guests(guests, relationships)

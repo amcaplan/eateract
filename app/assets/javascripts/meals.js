@@ -1,72 +1,4 @@
-var checkedLinks = [];
-
-var trackLinks = function() {
-  $(".topic-links").on("change", "input", function(){
-    thisValue = $(this).prop("value");
-    if ($(this).prop("checked")) {
-      checkedLinks.push(thisValue);
-    } else {
-      checkedLinks.splice(checkedLinks.indexOf(thisValue), 1);
-    }
-  });
-};
-
-var displayLinks = function(){
-  $("#meal_topic_id").on("change", function(){
-    var selected = $(".topic-title-select").find(":selected");
-    var topicID = selected.val();
-    var topicLinks = $(".topic-links");
-    var topicDescriptions = $(".topic-descriptions");
-    var topicDescriptionsContainer = $('.topic-descriptions-container');
-    if (topicID == "") {
-      topicLinks.slideUp().html("");
-      topicDescriptionsContainer.slideUp().find(".topic-descriptions").html("");
-    }
-    else {
-      $.getJSON("../../topics/" + topicID + "/links", function(response){
-        var output = "<h3>" + selected.text() + "</h3><br />";
-        var summary = "";
-        var currentSummary = "";
-        output += "<h4>(We recommend choosing about 3 links to send to your friends.)</h4><br /><p>";
-        $.each(response, function(index, link){
-          output += '<div class="link-option"><p><input id="link'+index+'" name="meal[links][]" type="checkbox" value="'+link.id +'"'
-          if(checkedLinks.indexOf(link.id.toString()) > -1){ output += "checked"; }
-          output += ' /> <a href="' + link.url + '" target="_blank">';
-          output += link.name + "</a>";
-          output += ' <span id="show-' + index + '" class="hide-for-large-up">(+ Show summary)</span>'
-          currentSummary = '<div class="hidden index-' + index + '">' + link.summary + '</div></div>';
-          summary += currentSummary;
-          output += '<div class="hide-for-large-up">' + currentSummary + '</div></p>';
-        });
-        output += "</p>";
-        topicLinks.html(output).slideDown();
-        topicDescriptionsContainer.slideDown();
-        topicDescriptions.append($(summary)).slideDown();
-      });
-    }
-    topicLinks.on("mouseover", ".link-option", function(){
-      if ($(window).width() > 1025) {
-        var id = $(this).find("input").attr("id").substring(4);
-        topicDescriptionsContainer.find(".index-" + id).first().show();
-      }
-    });
-    topicLinks.on("mouseleave", ".link-option", function(){
-      if ($(window).width() > 1025) {
-        var id = $(this).find("input").attr("id").substring(4);
-        topicDescriptionsContainer.find(".index-" + id).hide();
-      }
-    });
-    topicLinks.on("click", 'span', function(event){
-      var id = $(this).attr("id").substring(5);
-      $(this).parent().parent().parent().find(".index-"+id).slideToggle(100);
-      if ($(this).text() == "(+ Show summary)") {
-        $(this).text("(- Hide summary)");
-      } else {
-        $(this).text("(+ Show summary)");
-      }
-    });
-  });
-};
+// GENERAL PAGE FUNCTIONS
 
 var tabAround = function(){
   $(".tab-around").on("click", function(event){
@@ -74,7 +6,7 @@ var tabAround = function(){
     var target = this.href.substring(this.href.indexOf('#goto-') + 6);
     $("dl").find('a[href=\"#'+target+'\"]').click();
   })
-}
+};
 
 var checkWidth = function() {
     var windowSize = $(window).width();
@@ -87,14 +19,104 @@ var checkWidth = function() {
       $(".tabs").addClass("accordion").removeClass("tabs")
       $("form").addClass("border-top")
     }
-}
+};
+
+// FOR TOPICS FORM
+
+var trackLinks = function() {
+  $(".topic-links").on("change", "input", function(){
+    thisValue = $(this).prop("value");
+    if ($(this).prop("checked")) {
+      checkedLinks.push(thisValue);
+    } else {
+      checkedLinks.splice(checkedLinks.indexOf(thisValue), 1);
+    }
+  });
+};
+
+var displayLinksForSelected = function() {
+  var selected = $(".topic-title-select").find(":selected");
+  var topicID = selected.val();
+  var topicLinks = $(".topic-links");
+  var topicDescriptions = $(".topic-descriptions");
+  var topicDescriptionsContainer = $('.topic-descriptions-container');
+  if (topicID == "") {
+    topicLinks.slideUp().html("");
+    topicDescriptionsContainer.slideUp().find(".topic-descriptions").html("");
+  }
+  else {
+    $.getJSON("../../topics/" + topicID + "/links", function(response){
+      var output = "<h3>" + selected.text() + "</h3><br />";
+      var summary = "";
+      var currentSummary = "";
+      output += '<h4 class="subheader">(We recommend choosing about 3 links to send to your friends.)</h4><br /><p>';
+      $.each(response, function(index, link){
+        output += '<div class="link-option"><p><input id="link'+index+'" name="meal[link_ids][]" type="checkbox" value="'+link.id +'"'
+        if(checkedLinks.indexOf(link.id.toString()) > -1){ output += "checked"; }
+        output += ' /> <a href="' + link.url + '" target="_blank">';
+        output += link.name + "</a>";
+        output += ' <span id="show-' + index + '" class="hide-for-large-up">(+ Show summary)</span>'
+        currentSummary = '<div class="hidden index-' + index + '">' + link.summary + '</div></div>';
+        summary += currentSummary;
+        output += '<div class="hide-for-large-up">' + currentSummary + '</div></p>';
+      });
+      output += "</p>";
+      topicLinks.html(output).slideDown();
+      topicDescriptionsContainer.slideDown();
+      topicDescriptions.append($(summary)).slideDown();
+    });
+  }
+  topicLinks.on("mouseover", ".link-option", function(){
+    if ($(window).width() > 1025) {
+      var id = $(this).find("input").attr("id").substring(4);
+      topicDescriptionsContainer.find(".index-" + id).first().show();
+    }
+  });
+  topicLinks.on("mouseleave", ".link-option", function(){
+    if ($(window).width() > 1025) {
+      var id = $(this).find("input").attr("id").substring(4);
+      topicDescriptionsContainer.find(".index-" + id).hide();
+    }
+  });
+  topicLinks.on("click", 'span', function(event){
+    var id = $(this).attr("id").substring(5);
+    $(this).parent().parent().parent().find(".index-"+id).slideToggle(100);
+    if ($(this).text() == "(+ Show summary)") {
+      $(this).text("(- Hide summary)");
+    } else {
+      $(this).text("(+ Show summary)");
+    }
+  });
+};
+
+var displayLinks = function(){
+  displayLinksForSelected();
+  $("#meal_topic_id").on("change", displayLinksForSelected);
+};
+
+// FOR MENU FORM
+
+var updateRecipesInfo = function(){
+  $("#recipe_list").val(JSON.stringify(recipesInfo));
+};
 
 var removeMenuItems = function(link) {
   var parentDiv = $(this).parent();
   var parentID = parentDiv.prop("id");
   $("input[type=checkbox]").filter("#" + parentID).prop("checked", false);
   parentDiv.fadeOut(parentDiv.remove);
-}
+  delete recipesInfo[parentID];
+  updateRecipesInfo();
+};
+
+var addToMenu = function(recipeID, recipeName, newMenuItem){
+  var newMenuItem = $(".menu.item.hidden").clone();
+  newMenuItem.prop("id", recipeID);
+  // newMenuItem.prepend(checkbox.clone().addClass("hidden"));
+  newMenuItem.prepend(recipeName);
+  newMenuItem.appendTo($(".menu.panel")) && newMenuItem.fadeIn() && newMenuItem.removeClass("hidden");
+  newMenuItem.find(".remove-menu-item").on("click", newMenuItem.find("remove-menu-item"), removeMenuItems);
+};
 
 var tableize = function(queryString) {
   $.getJSON("../../recipes/search/" + queryString, function(response) {
@@ -112,19 +134,21 @@ var tableize = function(queryString) {
 
     $.each(response.matches, function(index, recipe) {
       var new_tr = tr.clone();
-      var checkboxName = "recipe" + recipe.id;
+      var checkboxName = recipe.id;
       var checked = "";
-      var existingBox = $(".hidden-recipes").find('#' + checkboxName);
-      if (existingBox.length > 0 && existingBox.slice(-1).prop("checked")) {
+      // Check whether to check this box
+      if (recipesInfo[checkboxName]) {
         checked = " checked";
       }
+      // Populate the new row
       new_tr.find(".recipe-checkbox").html('<input id="' + checkboxName +
         '" name="recipes[]" type="checkbox" value="' + checkboxName + '"' +
         checked + '>');
       if (recipe.smallImageUrls[0]) {
         new_tr.find(".recipe-image").html('<img src="'+recipe.smallImageUrls[0]+'">');
       }
-      new_tr.find(".recipe-name").html('<a class="recipe-link">' + recipe.recipeName + '</a>');
+      new_tr.find(".recipe-name").html('<a class="recipe-link" href="http://www.yummly.com/recipe/' +
+        recipe.id + '" target="_blank">' + recipe.recipeName + '</a>');
       if (recipe.attributes.course) {
         new_tr.find(".recipe-course").html(recipe.attributes.course);
       }
@@ -137,26 +161,26 @@ var tableize = function(queryString) {
       if (recipe.sourceDisplayName) {
         new_tr.find(".recipe-source").html(recipe.sourceDisplayName);
       }
+      // Add the row
       new_tr.appendTo($("tbody"));
+      // Add event handlers
       new_tr.find("input").click( function(){
         var checkbox = $(this);
         var recipeID = checkbox.prop("value");
+        // When checked, add to the menu
         if ($(this).is(':checked')) {
-          var recipeName = checkbox.parent().parent().find(".recipe-name").text()
-          var newMenuItem = $(".menu.item.hidden").clone()
-          newMenuItem.prop("id", checkbox.prop("id"));
-          newMenuItem.prepend(checkbox.clone().addClass("hidden"));
-          newMenuItem.prepend(recipeName);
-          newMenuItem.appendTo($(".menu.panel")) && newMenuItem.fadeIn() && newMenuItem.removeClass("hidden");
-          newMenuItem.find(".remove-menu-item").on("click", newMenuItem.find("remove-menu-item"), removeMenuItems);
+          var recipeName = checkbox.parent().parent().find(".recipe-name").text();
+          var recipeID = checkbox.prop("id"); 
+          addToMenu(recipeID, recipeName);
+          // Also add to recipesInfo
+          recipesInfo[recipeID] = recipeName;
+        // When unchecked, remove from the menu
         } else {
           $(".menu.panel").find($("#" + recipeID)).fadeOut(function() {$(this).remove()});
+          // Also remove from recipesInfo
+          delete recipesInfo[recipeID];
         }
-      });
-      new_tr.find(".recipe-link").on("click", function() {
-        $.getJSON("../../recipes/" + recipe.id, function(response){
-          window.open(response.json.source.sourceRecipeUrl, '_blank');
-        });
+        updateRecipesInfo();
       });
     }) && $(".recipe-container").slideDown();
   });
@@ -219,6 +243,15 @@ var enableSecretSubmit = function() {
   });
 }
 
+var initializeMenu = function() {
+  for (var recipeID in recipesInfo) {
+    if (recipesInfo.hasOwnProperty(recipeID)) {
+      addToMenu(recipeID, recipesInfo[recipeID]);
+      updateRecipesInfo();
+    }
+  }
+}
+
 $(document).ready(function(){
   trackLinks();
   enableAddGuestLink();
@@ -227,6 +260,7 @@ $(document).ready(function(){
   checkWidth();
   displayRecipes();
   enableSecretSubmit();
+  initializeMenu();
 
   $(window).resize(function(){
     checkWidth();
