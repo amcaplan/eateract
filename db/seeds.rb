@@ -11,9 +11,9 @@
   recipe1 = Recipe.create(name: "steak", cuisine_type: "American food", url: "example.com")
   Recipe.create(name: "French fries", cuisine_type: "American", url: "example2.com/fries")
   
-  topic1 = Topic.create(name: "Global Warming")
-  topic2 = Topic.create(name: "Attitudes Toward Death")
-  topic3 = Topic.create(name: "The Internet and Society")
+  topic1 = Topic.create(name: "Attitudes Toward Death")
+  topic2 = Topic.create(name: "The Internet and Society")
+  topic3 = Topic.create(name: "Short-term vs. Long-term Thinking in Life and Business")
 
   link1 = Link.create(name: "Harry Potter and Running from Death",
     link_type: "article",
@@ -49,7 +49,7 @@
     link_type: "article",
     url: "http://www.nytimes.com/2014/03/23/fashion/an-online-generation-redefines-mourning.html?hpw&rref=fashion&_r=1&gwh=D9A3D29386B12753993E067FE6145F05&gwt=regi",
     summary: "Expressions of grief take on many public forms in the digital age.")
-  topic2.links = [link1, link2, link3, link4, link5, link6, link7]
+  topic1.links = [link1, link2, link3, link4, link5, link6, link7]
 
   link8 = Link.create(name: "Study Of Internet Isolation Provides Chat Room Grist",
     link_type: "article",
@@ -79,7 +79,37 @@
     link_type: "article",
     url: "http://www.examiner.com/article/how-the-online-society-of-gamers-improves-life-for-everyone",
     summary: "In the technological age, it is not surprising that a major innovation has come in the way we now attempt to solve these challenges, using computers. What may surprise many is that the emerging combined art of video games have come to the forefront of this battle for man's health in a new and innovative way.")
-  topic3.links = [link8, link9, link10, link11, link12, link13, link14]
+  topic2.links = [link8, link9, link10, link11, link12, link13, link14]
+
+  link15 = Link.create(name: "Setting Smart Management Goals",
+    link_type: "article",
+    url: "http://www.dummies.com/how-to/content/setting-smart-management-goals.html",
+    summary: "How do you know what kind of goals to set? The best goals are SMART goals.")
+  link16 = Link.create(name: "Nickelback - If Today Was Your Last Day [OFFICIAL VIDEO]",
+    link_type: "video",
+    url: "https://www.youtube.com/watch?v=lrXIQQ8PeRs&feature=kp",
+    summary: '"If today was your last day / And tomorrow was too late / Could you say goodbye to yesterday?"')
+  link17 = Link.create(name: "The Jeff Bezos School of Long-Term Thinking",
+    link_type: "article",
+    url: "http://99u.com/articles/7255/the-jeff-bezos-school-of-long-term-thinking",
+    summary: "Obey the two pizza rule and other ways to plan for the future, as inspired by Amazon's CEO.")
+  link18 = Link.create(name: "A Farm’s Lessons in Long-Term Planning",
+    link_type: "article",
+    url: "http://www.nytimes.com/2014/02/03/your-money/a-farms-lessons-in-long-term-planning.html",
+    summary: "What may seem like a great decision now could be unsustainable in five or even 10 years and could easily undermine years of work.")
+  link19 = Link.create(name: "Living in the moment really does make people happier",
+    link_type: "article",
+    url: "http://www.theguardian.com/science/2010/nov/11/living-moment-happier",
+    summary: "Psychologists have found that people are distracted from the task at hand nearly half the time, and this daydreaming consistently makes them less happy.")
+  link20 = Link.create(name: "Planning for the future: On the behavioral economics of living longer",
+    link_type: "article",
+    url: "http://www.bringyourchallenges.com/roundtable/planning-for-the-future",
+    summary: "Our brains aren’t wired to plan for the long run. But if we can understand the behaviors that are tripping us up, we can find ways to work around them.")
+  link21 = Link.create(name: "If You Want To Be Successful, Don't Spend Too Much Time Planning: A Case Study",
+    link_type: "article",
+    url: "http://www.forbes.com/sites/actiontrumpseverything/2013/05/19/if-you-want-to-be-successful-dont-spend-too-much-time-planning-a-case-study/",
+    summary: "The most succesful people take small, smart steps toward their goals...and they don&#39;t over-plan.")
+  topic3.links = [link15, link16, link17, link18, link19, link20, link21]
   
   meal1 = Meal.create(time: Chronic.parse("one week from today"))
   meal1.save
