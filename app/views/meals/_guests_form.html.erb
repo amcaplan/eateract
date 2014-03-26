@@ -1,6 +1,6 @@
   <div class="guests small-11 large-10 columns small-centered">
     <h3>Who are you inviting?</h3>
-    <% 5.times do |i| %>
+    <% 3.times do |i| %>
       <div class="row">
       <%= f.fields_for(Person.new) do |ff| %>
         <div class="medium-4 small-12 columns">
@@ -12,7 +12,7 @@
         <div class="medium-4 small-12 columns">
           Relationship: <%= select_tag(:host_relationship, options_for_select(['friend','relative','neighbor', 'coworker', 'student','teacher','clergy', 'other']), name: "person[][host_relationship]", prompt: "Who is s/he to you?") %><br>
         </div>
-        <%= raw("<hr>") unless i == 4 %>
+        <%= raw("<hr>") unless i == 2 %>
       <% end %>
       </div>
     <% end %>

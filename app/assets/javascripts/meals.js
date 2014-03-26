@@ -1,3 +1,16 @@
+var checkedLinks = [];
+
+var trackLinks = function() {
+  $(".topic-links").on("change", "input", function(){
+    thisValue = $(this).prop("value");
+    if ($(this).prop("checked")) {
+      checkedLinks.push(thisValue);
+    } else {
+      checkedLinks.splice(checkedLinks.indexOf(thisValue), 1);
+    }
+  });
+};
+
 var displayLinks = function(){
   $("#meal_topic_id").on("change", function(){
     var selected = $(".topic-title-select").find(":selected");
@@ -16,8 +29,9 @@ var displayLinks = function(){
         var currentSummary = "";
         output += "<h4>(We recommend choosing about 3 links to send to your friends.)</h4><br /><p>";
         $.each(response, function(index, link){
-          output += '<div class="link-option"><p><input id="link'+index+'" name="links[]" type="checkbox" value="'+link.id+'" />'
-          output += ' <a href="' + link.url + '" target="_blank">';
+          output += '<div class="link-option"><p><input id="link'+index+'" name="meal[links][]" type="checkbox" value="'+link.id +'"'
+          if(checkedLinks.indexOf(link.id.toString()) > -1){ output += "checked"; }
+          output += ' /> <a href="' + link.url + '" target="_blank">';
           output += link.name + "</a>";
           output += ' <span id="show-' + index + '" class="hide-for-large-up">(+ Show summary)</span>'
           currentSummary = '<div class="hidden index-' + index + '">' + link.summary + '</div></div>';
@@ -33,7 +47,7 @@ var displayLinks = function(){
     topicLinks.on("mouseover", ".link-option", function(){
       if ($(window).width() > 1025) {
         var id = $(this).find("input").attr("id").substring(4);
-        topicDescriptionsContainer.find(".index-" + id).show();
+        topicDescriptionsContainer.find(".index-" + id).first().show();
       }
     });
     topicLinks.on("mouseleave", ".link-option", function(){
@@ -76,7 +90,6 @@ var checkWidth = function() {
 }
 
 var removeMenuItems = function(link) {
-  console.log(this);
   var parentDiv = $(this).parent();
   var parentID = parentDiv.prop("id");
   $("input[type=checkbox]").filter("#" + parentID).prop("checked", false);
@@ -142,7 +155,6 @@ var tableize = function(queryString) {
       });
       new_tr.find(".recipe-link").on("click", function() {
         $.getJSON("../../recipes/" + recipe.id, function(response){
-          console.log(response.json);
           window.open(response.json.source.sourceRecipeUrl, '_blank');
         });
       });
@@ -195,13 +207,20 @@ var enableAddGuestLink = function() {
   $('.add-guest').on("click", addGuestHere)
 };
 
+var syncTimes = function() {
+  $(".hidden-date-field").val($(".visible-date-field").val()) &&
+  $(".hidden-time-field").val($(".visible-time-field").val());
+  return true;
+};
+
 var enableSecretSubmit = function() {
   $(".pre-submit").click(function(){
-    $("#the-actual-submit-button").trigger("click");
+    syncTimes() && $("#the-actual-submit-button").trigger("click");
   });
 }
 
 $(document).ready(function(){
+  trackLinks();
   enableAddGuestLink();
   displayLinks();
   tabAround();
