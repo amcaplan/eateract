@@ -1,7 +1,7 @@
 <li class="meal-li">
   <div class="meal-container">
     <div class="text-center">
-      <% if meal.time %>
+      <% if meal.finished %>
         <h3>Meal Organized by <%= meal.host ? meal.host.name : "<organizer>" %></h3>
       </div>
         <%= meal.time_string %>, discussing <strong><%= meal.topic ? meal.topic.name : "an undetermined topic" %></strong>
@@ -14,7 +14,7 @@
       <% else %>
         MEAL IN PROGRESS
       <% end %>
-    <% if meal.hosted_by?(current_user) %>
+    <% if meal.hosted_by?(current_user) && !meal.finished %>
       <br><br>
       <div class="text-center">
         <%= link_to (button_tag "Edit Details", class: "tiny"), edit_meal_path(meal.id) %>

@@ -111,7 +111,7 @@
     summary: "The most succesful people take small, smart steps toward their goals...and they don&#39;t over-plan.")
   topic3.links = [link15, link16, link17, link18, link19, link20, link21]
   
-  meal1 = Meal.create(time: Chronic.parse("one week from today"))
+  meal1 = Meal.create(time: Chronic.parse("one week from today"), finished: true)
   meal1.save
   meal1.topic = topic1
   meal1.add_recipe(recipe1)

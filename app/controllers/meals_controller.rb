@@ -45,9 +45,12 @@ class MealsController < ApplicationController
   # GET /meals
   # GET /meals.json
   def index
-    if session[:user_id]
-      @meals = Meal.joins(:meal_people).where("meal_people.person_id" => current_user)
-    end
+    Meal.joins(:meal_people).where("meal_people.person_id" => current_user).
+      select{|meal| meal.time < Time.now && !meal.finished}.map(&:delete)
+    meals = Meal.joins(:meal_people).where("meal_people.person_id" => current_user)
+    @upcoming_meals = meals.select{|meal| meal.time > Time.now && meal.finished}
+    @past_meals = meals.select{|meal| meal.time < Time.now && meal.finished}
+    @unfinished_meals = meals.select{|meal| !meal.finished}
   end
 
   # GET /meals/1
@@ -67,21 +70,22 @@ class MealsController < ApplicationController
   # GET /meals/1/edit
   def edit
     @host = User.find(session[:user_id]).person
-    unless @host && @meal.hosted_by?(@host)
+    if @host && @meal.hosted_by?(@host) && !@meal.finished
+      @people = @meal.people.reject{|person| person == @host} << Person.new
+      @topic_id = @meal.topic_id
+      @link_ids = @meal.links.pluck(:id)
+      recipes = @meal.recipes.pluck(:url, :name)
+      recipes.map! do |recipe|
+        [recipe[0][29..-1], recipe[1]]
+      end
+      @recipes = Hash[recipes]
+      time = @meal.time
+      if time
+        time = time.to_datetime.rfc3339.split("T")
+        @date, @time = time[0], time[1][0..-7]
+      end
+    else
       redirect_to meals_url
-    end
-    @people = @meal.people.reject{|person| person == @host} << Person.new
-    @topic_id = @meal.topic_id
-    @link_ids = @meal.links.pluck(:id)
-    recipes = @meal.recipes.pluck(:url, :name)
-    recipes.map! do |recipe|
-      [recipe[0][29..-1], recipe[1]]
-    end
-    @recipes = Hash[recipes]
-    time = @meal.time
-    if time
-      time = time.to_datetime.rfc3339.split("T")
-      @date, @time = time[0], time[1][0..-7]
     end
   end
 
@@ -106,7 +110,6 @@ class MealsController < ApplicationController
     end
   end
 
-  alias_method :update, :create
   def update
     @update = true
     create_or_update
@@ -114,6 +117,10 @@ class MealsController < ApplicationController
 
     respond_to do |format|
       if @meal.update(meal_params)
+        if params[:commit] == "Submit meal"
+          @meal.finished = true
+          @meal.save
+        end
         format.html { redirect_to @meal, notice: 'Meal was successfully updated.' }
         format.json { head :no_content }
       else

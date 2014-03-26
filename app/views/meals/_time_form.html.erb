@@ -1,11 +1,14 @@
-<%= date_field(:meal, :time, name: "meal[date]", value: @date, class: "hidden hidden-date-field") %>
+<%= date_field(:meal, :time, name: "meal[date]",
+  value: @date, class: "hidden hidden-date-field") %>
 <%= time_field(:meal, :time, value: @time, class: "hidden hidden-time-field") %>
 
 <div id="myModal" class="reveal-modal" data-reveal>
   <h2>You're almost done!</h2>
   <div class="small-10 large-6 columns">
     <p class="lead">Choose a date for your meal...</p>
-    <%= date_field(:meal, :time, name: "meal[date]", value: @date, class: "visible-date-field") %>
+    <%= date_field(:meal, :time, name: "meal[date]",
+    
+    value: @date, class: "visible-date-field", min: (Time.now.to_datetime + 1).rfc3339.split("T").first) %>
   </div>
   <div class="small-10 large-6 columns">
     <p class="lead">...and a time...</p>

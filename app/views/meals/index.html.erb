@@ -1,9 +1,23 @@
-<div class="small-11 columns small-centered">
+<div class="small-12 columns small-centered">
   <h1>Your Meals</h1>
-  <h3 class="subheader">Save the dates!</h3>
-  <ul class="small-block-grid-2 large-block-grid-4 small-text-centered">
-  <%= render @meals %>
-  </ul>
+  <% if !@upcoming_meals.empty? %>
+    <h3 class="subheader">Your Upcoming Meals</h3>
+    <ul class="small-block-grid-2 large-block-grid-4 small-text-centered">
+    <%= render @upcoming_meals %>
+    </ul>
+  <% end %>
+  <% if !@past_meals.empty? %>
+    <h3 class="subheader">Your Past Meals</h3>
+    <ul class="small-block-grid-2 large-block-grid-4 small-text-centered">
+    <%= render @past_meals %>
+    </ul>
+  <% end %>
+  <% if !@unfinished_meals.empty? %>
+    <h3 class="subheader">Want to Finish Up a Meal Plan?</h3>
+    <ul class="small-block-grid-2 large-block-grid-4 small-text-centered">
+    <%= render @unfinished_meals %>
+    </ul>
+  <% end %>
 </div>
 
 <br>
