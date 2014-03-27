@@ -1,0 +1,34 @@
+<dt>
+  <h3>This is an invite from <%= @meal.host.first.name %>.</h3>
+</dt>
+<dd>
+  <dl>
+    <dt><%= @meal.time_string %></dt><dd></dd>
+    
+    <p>
+      <dt>You're invited to join a meal and engage in deep conversation about <%= @meal.topic %>. In preparation, your host has requested that you look over the following links:</dt>
+      <dd>
+        <ul>
+        <% @meal.links.each do |link| %>
+          <li><a href="<%= link.url %>"><%= link.name %></a></li>
+        <% end %>
+      </dd>
+    </p>
+
+    <p>
+      <dt>Would you like to volunteer to bring something? Your host has requested that these foods be brought:</dt>
+      <dd>
+        <% @meal.recipes.each do |recipe| %>
+          <a href="<%= recipe.url %>"><%= recipe.name %></a><br>
+        <% end %>
+      </dd>
+    </p>
+
+    <p>
+      <dt>Let your host know whether you can make it, and view more information!</dt>
+      <dd>
+        <a href="<%= "#{meal_url(@meal)}?invite=#{@meal_person.token}" %>"><button>CLICK HERE</button></a><br>
+      </dd>
+    </p>
+  </dl>
+</dd>

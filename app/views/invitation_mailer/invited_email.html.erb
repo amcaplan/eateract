@@ -2,11 +2,17 @@
 <html>
   <head>
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style>
+    
+    </style>
   </head>
   <body>
     <div style="text-align: center">
       <h1>Congratulations, <%= @person.name %>, you've been invited to a meal!</h1>
       <%= image_tag attachments['logo.png'].url %>
+      <div>
+        <%= render partial: 'meal_info' %>
+      </div>
     </div>
   </body>
 </html>
