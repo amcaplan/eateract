@@ -199,6 +199,7 @@ class MealsController < ApplicationController
       }.map(&:save)
       @meal.recipes = recipes
       @meal.link_ids = params[:meal][:link_ids]
+      Chronic.time_class = Time.zone
       @meal.time = Chronic.parse("#{params[:meal][:date]} #{params[:meal][:time]}")
 
       params[:commit] = "Stash changes" if recipes.empty? || people.empty? || !@meal.time
