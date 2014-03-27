@@ -1,6 +1,8 @@
 <p id="notice"><%= notice %></p>
 
-<%= render @meal %>
-
-<%= link_to 'Edit', edit_meal_path(@meal) %> |
-<%= link_to 'Back', meals_path %>
+<%= render partial: 'full_meal_display' %>
+<br>
+<br>
+<div class="small-text-center small-12 columns">
+  <%= link_to 'View all my meals', meals_path, class: "button small" %>
+</div>

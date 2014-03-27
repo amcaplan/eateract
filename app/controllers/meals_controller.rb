@@ -46,11 +46,17 @@ class MealsController < ApplicationController
   # GET /meals.json
   def index
     Meal.joins(:meal_people).where("meal_people.person_id" => current_user).
-      select{|meal| meal.time < Time.now && !meal.finished}.map(&:delete)
+      select{|meal| !meal.finished && meal.time && meal.time < Time.now}.map(&:delete)
     meals = Meal.joins(:meal_people).where("meal_people.person_id" => current_user)
-    @upcoming_meals = meals.select{|meal| meal.time > Time.now && meal.finished}
-    @past_meals = meals.select{|meal| meal.time < Time.now && meal.finished}
-    @unfinished_meals = meals.select{|meal| !meal.finished}
+    @upcoming_meals = meals.select{|meal| meal.finished && meal.time > Time.now}
+    @past_meals = meals.select{|meal| meal.finished && meal.time < Time.now}
+    @unfinished_meals = meals.select{|meal| !meal.finished && meal.host.pluck(:id)[0] == session[:user_id]}
+    puts "upcoming"
+    puts @upcoming_meals
+    puts "past"
+    puts @past_meals
+    puts "unfinished"
+    puts @unfinished_meals
   end
 
   # GET /meals/1
@@ -92,7 +98,7 @@ class MealsController < ApplicationController
   # POST /meals
   # POST /meals.json
   def create
-    @update = false
+    @create = true
     create_or_update
 
     respond_to do |format|
@@ -111,7 +117,7 @@ class MealsController < ApplicationController
   end
 
   def update
-    @update = true
+    @create = false
     create_or_update
     @meal.save
 
@@ -181,7 +187,9 @@ class MealsController < ApplicationController
     def create_or_update
       recipes = generate_recipes(params[:recipe_list])
       people = generate_people(params[:person])
-      @meal = Meal.create(meal_params) if @create
+      if @create
+        @meal = Meal.create(meal_params)
+      end
       @meal.people = people
       @meal.meal_people.each { |mp|
         mp.host_relationship = params[:person].find{|person|
@@ -192,6 +200,6 @@ class MealsController < ApplicationController
       @meal.link_ids = params[:meal][:link_ids]
       @meal.time = Chronic.parse("#{params[:meal][:date]} #{params[:meal][:time]}")
 
-      params[:commit] == "Stash changes" if recipes.empty? || people.empty?
+      params[:commit] = "Stash changes" if recipes.empty? || people.empty? || !@meal.time
     end
 end

@@ -6,12 +6,19 @@
 
 // FOR THE INDEX PAGE
 .meal-li {
-  background: #CD3333;
+  background: rgba(203, 30, 30, 0.8);
   box-shadow: 1px 1px 3px 1px #444;
   margin: 2px;
   padding: 5px !important;
   border: 2px solid black;
-  color: white;
+  
+  border-radius: 10px;
+}
+
+.all-meals-container {
+  background: rgba(30, 130, 200, 0.3);
+  border-radius: 10px;
+  box-shadow: 1px 1px 3px 1px #444;
 }
 
 // FOR THE FORM

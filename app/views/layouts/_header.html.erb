@@ -1,34 +1,31 @@
-<div class="sticky" data-options="sticky_on: large">
-  <nav class="top-bar">
-    <ul class="title-area">
-      <li class="name">
-        <h1 class="title"><%= link_to "Eateract", root_url %></h1>
+<nav class="top-bar" data-topbar>
+  <ul class="title-area">
+    <li class="name">
+      <h1 class="title"><%= link_to "Eateract", root_url %></h1>
+    </li>
+    <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
+  </ul>
+
+  <section class="top-bar-section">
+    <!-- Right Nav Section -->
+    <ul class="right">
+      <li class="active">
+        <%= render partial: 'layouts/facebook_widget' %>  
       </li>
-      <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
     </ul>
 
-    <section class="top-bar-section">
-      <!-- Right Nav Section -->
-      <ul class="right">
-        <!-- <li class="has-dropdown">
-          <a href="#">Right Button Dropdown</a>
-          <ul class="dropdown">
-            <li><a href="#">First link in dropdown</a></li>
-          </ul>
-        </li> -->
-        <li class="active facebook">
-          <%= render partial: 'layouts/facebook_widget' %>  
-        </li>
-      </ul>
-
-      <!-- Left Nav Section -->
-      <ul class="left">
-        <% if current_user %>
-          <li><a href="/meals">See my meals</a></li>
-        <% else %>
-          <li><a>Log in to see your meals!</a></li>
+    <!-- Left Nav Section -->
+    <ul class="left">
+      <% if current_user %>
+        <li class="divider"></li>
+        <li><a href="/meals">See my meals</a></li>
+        <% if !@dont_show_new_meal_button %>
+          <li class="divider"></li>
+          <li><a href="/meals/new">Start a new meal</a></li>
         <% end %>
-      </ul>
-    </section>
-  </nav>
-</div>
+      <% else %>
+        <li><a>Log in to see your meals!</a></li>
+      <% end %>
+    </ul>
+  </section>
+</nav>

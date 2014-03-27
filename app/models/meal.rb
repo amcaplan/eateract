@@ -16,7 +16,7 @@ class Meal < ActiveRecord::Base
   belongs_to :topic
 
   def time_string
-    time.strftime('%A, %b %-d, %Y at %l:%M%p')
+    time ? time.strftime('%A, %b %-d, %Y at %l:%M%p') : "an undetermined time"
   end
 
   def add_recipe(recipe, quantity = 1)
@@ -41,6 +41,10 @@ class Meal < ActiveRecord::Base
       MealPerson.create(person: guest, meal: self, host: false,
         host_relationship: relationships.shift)
     end
+  end
+
+  def guest_count
+    meal_people.size
   end
 
   def active_guest_count

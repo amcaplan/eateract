@@ -1,0 +1,24 @@
+<li class="meal-li">
+  <div class="meal-container">
+    <div class="text-center">
+      <% if @meal.finished %>
+        <h3>Meal Organized by <%= @meal.host.name %></h3>
+      </div>
+        <%= @meal.time_string %>, discussing <strong><%= @meal.topic ? @meal.topic.name : "an undetermined topic" %></strong>
+        with <%= @meal.active_guest_count %> participants
+        <% if @meal.num_guests_attending == 0 %>
+          (no responses yet)
+        <% else %>
+          (<%= pluralize('attendee', @meal.num_guests_attending) %> so far!)
+        <% end %>
+      <% else %>
+        <h3 class="subheader">MEAL IN PROGRESS</h3>
+      <% end %>
+    <% if @meal.hosted_by?(current_user) && !@meal.finished %>
+      <br><br>
+      <div class="text-center">
+        <%= link_to "Edit Details", edit_meal_path(@meal.id), class: "button large" %>
+      </div>
+    <% end %>
+  </div>
+</li>
