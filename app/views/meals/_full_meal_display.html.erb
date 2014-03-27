@@ -16,7 +16,7 @@
               <dd>
                 <ul>
                 <% @meal.links.each do |link| %>
-                  <li><a href="<%= link.url %>"><%= link.name %></a></li>
+                  <li><a href="<%= link.url %>" target="_blank"><%= link.name %></a></li>
                 <% end %>
               </dd>
             </div>
@@ -70,7 +70,7 @@
                 <dt>Claimed Recipes</dt>
                 <dd>
                   <% @meal.claimed_meal_recipes.each do |m_r| %>
-                    <a href="<%= m_r.recipe.url %>"><%= m_r.recipe.name %></a> -
+                    <a href="<%= m_r.recipe.url %>" target="_blank"><%= m_r.recipe.name %></a> -
                     claimed by <% m_r_person = Person.find(m_r.person_id) %>
                     <%= m_r_person.id == @person.id ? "you" : m_r_person.name %>
                     <br>
