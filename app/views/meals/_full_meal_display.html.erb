@@ -82,7 +82,7 @@
                 <dd>
                   <%= form_tag "/meals/#{@meal.id}/guests/#{@person.id}", method: 'put', class: "recipe-form" do %>
                     <% @meal.unclaimed_recipes.each do |recipe| %>
-                      <input type="checkbox" name="recipes[]" value="<%= recipe.id %>" <%= "checked" if @meal_person.person_id == @person %>>
+                      <input type="checkbox" name="meal_recipes[]" value="<%= recipe.id %>" <%= "checked" if @meal_person.person_id == @person %>>
                       <a href="<%= recipe.url %>"><%= recipe.name %></a><br>
                     <% end %>
                     <br>

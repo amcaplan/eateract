@@ -1,42 +1,3 @@
-# {
-#   "utf8"=>"✓",
-#   "authenticity_token"=>"HTDe2rX1BcRlDsp4O2td6gOsSIIHcLzc428b95CBRMc=",
-#   "person"=>[
-#     {
-#       "name"=>"Ariel Caplan",
-#       "email"=>"ariel.caplan@mail.yu.edu",
-#       "host_relationship"=>"friend"
-#     },
-#     {
-#       "name"=>"Ariella Gottesman",
-#       "email"=>"aagottesman@gmail.com",
-#       "host_relationship"=>"relative"
-#     },
-#     {"name"=>"", "email"=>"", "host_relationship"=>""},
-#     {"name"=>"", "email"=>"", "host_relationship"=>""},
-#     {"name"=>"", "email"=>"", "host_relationship"=>""},
-#     {"name"=>"", "email"=>"", "host_relationship"=>""},
-#     {"name"=>"", "email"=>"", "host_relationship"=>""},
-#     {"name"=>"", "email"=>"", "host_relationship"=>""}
-#   ],
-#   "meal"=>{
-#     "topic_id"=>"2"
-#     },
-#   "links"=>["1", "4", "6"],
-#   "recipes"=>[
-#     "recipePull-apart-spicy-cheese-bread-308317",
-#     "recipeGarlicky-Party-Bread-with-Herbs-and-Cheese-501520",
-#     "recipeCrisp-rosemary-flatbread-307140",
-#     "recipePull-apart-spicy-cheese-bread-308317",
-#     "recipeGarlicky-Party-Bread-with-Herbs-and-Cheese-501520",
-#     "recipeCrisp-rosemary-flatbread-307140"
-#   ],
-#   "recipe_query"=>"bread",
-#   "commit"=>"Submit meal",
-#   "action"=>"create",
-#   "controller"=>"meals"
-# }
-
 class MealsController < ApplicationController
   before_action :redirect_if_not_logged_in, except: [:show, :signup_for_recipes]
   before_action :set_meal, only: [:show, :edit, :update, :destroy]
@@ -66,7 +27,9 @@ class MealsController < ApplicationController
     @person = if current_user
       Person.find_by(email: User.where(id: current_user).pluck(:email))
     else
-      MealPerson.find_by(token: params[:token]).person
+      session[:token] = params[:invite]
+      mp = MealPerson.find_by(token: params[:invite])
+      mp.person if mp
     end
     redirect_to root_url unless @meal && @person
     @meal_person = @meal.meal_people.find_by(person_id: @person.id) if @person
@@ -143,12 +106,21 @@ class MealsController < ApplicationController
     end
   end
 
+  # PUT /meals/1/guests/1
   def signup_for_recipes
-    binding.pry
-    person_id = params[:person_id]
-    meal_recipes = MealRecipe.where(id: params[:recipes])
+    person_id = if current_user
+      params[:person_id]
+    else
+      MealPerson.find_by(token: session[:token]).person.id
+    end
+    meal_recipes = MealRecipe.where(id: params[:meal_recipes])
     meal_recipes.each{|mp| mp.person_id = person_id}.each(&:save)
-    redirect_to Meal.find(params[:meal_id])
+    if current_user
+      redirect_to Meal.find(params[:meal_id])
+    else
+      redir_string = "#{root_url}meals/#{params[:meal_id]}?invite=#{session[:token]}"
+      redirect_to redir_string
+    end
   end
 
   # DELETE /meals/1

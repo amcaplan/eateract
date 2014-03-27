@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
     user.person = person
     user.save
     session[:user_id] = user.id
-    redirect_to session[:original_url]
+    redirect_to meals_url
   end
 
   def destroy
