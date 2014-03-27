@@ -11,7 +11,6 @@
   margin: 2px;
   padding: 5px !important;
   border: 2px solid black;
-  
   border-radius: 10px;
 }
 
@@ -19,6 +18,22 @@
   background: rgba(30, 130, 200, 0.3);
   border-radius: 10px;
   box-shadow: 1px 1px 3px 1px #444;
+}
+
+// FOR THE MEAL DISPLAY PAGE
+.one-full-meal {
+  font-size: 1.1em;
+}
+
+form.recipe-form {
+  background: none !important;
+}
+
+div.meal-display-section {
+  background: rgba(0, 0, 0, 0.2);
+  
+  margin-bottom: 10px;
+  padding: 10px;
 }
 
 // FOR THE FORM
@@ -45,7 +60,7 @@ dl.tabs {
   }
 }
 
-form {
+form.meal-form {
   border: 4px solid darkblue;
   border-top: none;
   border-radius: 10px;

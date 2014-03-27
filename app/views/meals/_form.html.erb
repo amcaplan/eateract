@@ -1,4 +1,4 @@
-<%= form_for @meal do |f| %>
+<%= form_for @meal, class: "meal-form" do |f| %>
   <dl class="tabs" data-tab>
     <dd class="active"><a href="#guests">Choose Guests</a></dd>
     <dd><a href="#topic">Initiate the Conversation</a></dd>
@@ -17,7 +17,7 @@
     <div class="content" id="time">
       <%= render partial: 'time_form', locals: {f: f} %>
     </div>
-    <%= f.submit "Stash changes", class: "button alert small-6 columns" , style: "border: 4px solid white" %>
-    <input class="button alert small-6 columns" style="border: 4px solid white" type="submit" value="Save meal" data-reveal-id="myModal" data-reveal>
+    <%= f.submit "Stash changes", class: "button alert small-6 columns meal-form-submit" , style: "border: 4px solid white" %>
+    <input class="button alert small-6 columns meal-form-submit" style="border: 4px solid white" type="submit" value="Save meal" data-reveal-id="myModal" data-reveal>
   </div>
 <% end %>

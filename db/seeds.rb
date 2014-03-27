@@ -115,12 +115,14 @@
   meal1.save
   meal1.topic = topic1
   meal1.add_recipe(recipe1)
+  meal1.links = [link1, link3, link5]
   meal1.save
   
   meal2 = Meal.create(time: Chronic.parse("two weeks from today"))
   meal2.save
   meal2.topic = topic1
   meal2.add_recipe(recipe1)
+  meal2.links = [link9, link12, link14]
   meal2.save
   
   MealPerson.create(host: true, host_relationship: 'self', person: person1, meal: meal1)

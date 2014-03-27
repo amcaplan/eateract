@@ -1,24 +1,108 @@
-<li class="meal-li">
-  <div class="meal-container">
-    <div class="text-center">
+<dl class="meal-container meal-li round one-full-meal">
+  <div class="row">
+    <div class="small-12 columns">
       <% if @meal.finished %>
-        <h3>Meal Organized by <%= @meal.host.name %></h3>
-      </div>
-        <%= @meal.time_string %>, discussing <strong><%= @meal.topic ? @meal.topic.name : "an undetermined topic" %></strong>
-        with <%= @meal.active_guest_count %> participants
-        <% if @meal.num_guests_attending == 0 %>
-          (no responses yet)
-        <% else %>
-          (<%= pluralize('attendee', @meal.num_guests_attending) %> so far!)
-        <% end %>
+        <dt class="text-center">
+          <h3>Meal Organized by <%= @meal.host.first.name %></h3>
+        </dt>
+        <dd>
+          <dl>
+            <dt><%= @meal.time_string %></dt><dd></dd>
+            
+            <div class="meal-topic-display meal-display-section">
+              <dt>Topic</dt>
+              <dd><%= @meal.topic ? @meal.topic.name : "undetermined" %></dd>
+              <dt>Links</dt>
+              <dd>
+                <ul>
+                <% @meal.links.each do |link| %>
+                  <li><a href="<%= link.url %>"><%= link.name %></a></li>
+                <% end %>
+              </dd>
+            </div>
+
+            <div class="meal-guests-display meal-display-section">
+              <ul class="no-bullet small-block-grid-1 large-block-grid-3">
+                <% if @meal.num_guests_attending > 0 %>
+                  <li>
+                    <dt>Guests attending</dt>
+                    <dd>
+                      <ul class="no-bullet">
+                        <% @meal.guests_attending.pluck(:name).each do |person_name| %>
+                          <li><%= person_name %></li>
+                        <% end %>
+                      </ul>
+                      <%= @meal.num_guests_attending %> total
+                    </dd>
+                  </li>
+                <% end %>
+                <% if @meal.num_guests_not_attending > 0 %>
+                  <li>
+                    <dt>Guests declining</dt>
+                    <dd>
+                      <ul class="no-bullet">
+                        <% @meal.guests_not_attending.pluck(:name).each do |person_name| %>
+                          <li><%= person_name %></li>
+                        <% end %>
+                      </ul>
+                      <%= @meal.num_guests_not_attending %> total
+                    </dd>
+                  </li>
+                <% end %>
+                <% if @meal.num_guests_not_responded > 0 %>
+                  <li>
+                    <dt>No RSVP Yet</dt>
+                    <dd>
+                      <ul class="square">
+                        <% @meal.guests_not_responded.pluck(:name).each do |person_name| %>
+                          <li><%= person_name %></li>
+                        <% end %>
+                      </ul>
+                      <%= @meal.num_guests_not_responded %> total
+                    </dd>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+
+            <div class="meal-recipes-display meal-display-section">
+              <% if @meal.claimed_recipes.size > 0 %>
+                <dt>Claimed Recipes</dt>
+                <dd>
+                  <% @meal.claimed_recipes.each do |recipe| %>
+                    <a href="<%= recipe.url %>"><%= recipe.name %></a>
+                  <% end %>
+                </dd>
+              <% end %>
+              <% if @meal.unclaimed_recipes.size > 0 %>
+                <dt>Would you like to volunteer to bring something?</dt>
+                <dd>
+                  <%= form_tag "/meals/#{@meal.id}/guests/#{@person.id}", method: 'put', class: "recipe-form" do %>
+                    <% @meal.unclaimed_recipes.each do |recipe| %>
+                      <input type="checkbox" name="recipes[]" value="<%= recipe.id %>" <%= "checked" if @meal_person.person_id == @person %>>
+                      <a href="<%= recipe.url %>"><%= recipe.name %></a><br>
+                    <% end %>
+                    <br>
+                    <div class="small-text-center">
+                      <%= submit_tag "Volunteer for these recipes", class: "button small" %>
+                    </div>
+                  <% end %>
+                </dd>
+              <% end %>
+            </div>
+          </dl>
+        </dd>
       <% else %>
-        <h3 class="subheader">MEAL IN PROGRESS</h3>
+        <dt class="text-center">
+          MEAL IN PROGRESS
+        </dt>
+        <% if @meal.hosted_by?(@person) %>
+          <br><br>
+          <div class="text-center">
+            <%= link_to "Edit Details", edit_meal_path(@meal.id), class: "button large" %>
+          </div>
+        <% end %>
       <% end %>
-    <% if @meal.hosted_by?(current_user) && !@meal.finished %>
-      <br><br>
-      <div class="text-center">
-        <%= link_to "Edit Details", edit_meal_path(@meal.id), class: "button large" %>
-      </div>
-    <% end %>
+    </div>
   </div>
-</li>
+</dl>

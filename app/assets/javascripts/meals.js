@@ -14,7 +14,7 @@ var checkWidth = function() {
       $(".accordion").addClass("tabs").removeClass("accordion")
       $("form").removeClass("border-top")
       $(".content").detach().appendTo($(".tabs-content"));
-      $("input[type=submit]").detach().appendTo($(".tabs-content"));
+      $("input[type=submit]").filter(".meal-form-submit").detach().appendTo($(".tabs-content"));
     } else {
       $(".tabs").addClass("accordion").removeClass("tabs")
       $("form").addClass("border-top")

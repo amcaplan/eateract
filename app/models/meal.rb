@@ -43,6 +43,10 @@ class Meal < ActiveRecord::Base
     end
   end
 
+  def guests
+    Person.where(id: meal_people.where.not(host_relationship: "self").pluck(:person_id))
+  end
+
   def guest_count
     meal_people.size
   end
@@ -52,7 +56,7 @@ class Meal < ActiveRecord::Base
   end
 
   def guests_attending
-    meal_people.where(attending: true)
+    guests.where(id: meal_people.where(attending: true).pluck(:person_id))
   end
 
   def num_guests_attending
@@ -60,7 +64,7 @@ class Meal < ActiveRecord::Base
   end
 
   def guests_not_attending
-    meal_people.where(attending: false)
+    guests.where(id: meal_people.where(attending: false).pluck(:person_id))
   end
 
   def num_guests_not_attending
@@ -68,10 +72,18 @@ class Meal < ActiveRecord::Base
   end
 
   def guests_not_responded
-    meal_people.where(attending: nil)
+    guests.where(id: meal_people.where(attending: nil).pluck(:person_id))
   end
 
   def num_guests_not_responded
     guests_not_responded.size
+  end
+
+  def unclaimed_recipes
+    Recipe.where(id: meal_recipes.where(person_id: nil).pluck(:recipe_id)).all
+  end
+
+  def claimed_recipes
+    Recipe.where(id: meal_recipes.where.not(person_id: nil).pluck(:recipe_id)).all
   end
 end

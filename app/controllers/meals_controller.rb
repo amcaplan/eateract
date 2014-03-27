@@ -38,7 +38,7 @@
 # }
 
 class MealsController < ApplicationController
-  before_action :redirect_if_not_logged_in
+  before_action :redirect_if_not_logged_in, except: [:show, :signup_for_recipes]
   before_action :set_meal, only: [:show, :edit, :update, :destroy]
   before_action :dont_show_new_meal_button, only: [:new, :edit]
 
@@ -63,6 +63,13 @@ class MealsController < ApplicationController
   # GET /meals/1.json
   def show
     @meal = Meal.find(params[:id])
+    @person = if current_user
+      Person.find_by(email: User.where(id: current_user).pluck(:email))
+    else
+      MealPerson.find_by(token: params[:token]).person
+    end
+    redirect_to root_url unless @meal && @person
+    @meal_person = @meal.meal_people.find_by(person_id: @person.id) if @person
   end
 
   # GET /meals/new
@@ -134,6 +141,14 @@ class MealsController < ApplicationController
         format.json { render json: @meal.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def signup_for_recipes
+    binding.pry
+    person_id = params[:person_id]
+    meal_recipes = MealRecipe.where(id: params[:recipes])
+    meal_recipes.each{|mp| mp.person_id = person_id}.each(&:save)
+    redirect_to Meal.find(params[:meal_id])
   end
 
   # DELETE /meals/1

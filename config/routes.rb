@@ -3,9 +3,10 @@ Eateract::Application.routes.draw do
     resources :ratings
   end
 
-  resources :topics, only: [:index, :show] do
-    resources :ratings, only: :show
-  end
+  # THIS MAY GET PUT IN LATER ONCE RATINGS ARE IMPLEMENTED
+  # resources :topics, only: [:index, :show] do
+  #   resources :ratings, only: :show
+  # end
   match 'topics/:topic_id/links', to: 'topics#get_links', via: [:get]
 
   # Routes for login
@@ -16,6 +17,9 @@ Eateract::Application.routes.draw do
   # Routes for recipe retrieval
   match 'recipes/search/:query', to: 'recipes#search', via: [:get]
   match 'recipes/:recipe_id', to: 'recipes#get_details', via: [:get]
+
+  # Routes for guests to update meals
+  match 'meals/:meal_id/guests/:person_id', to: 'meals#signup_for_recipes', via: [:put]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
