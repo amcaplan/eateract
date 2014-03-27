@@ -2,22 +2,20 @@
   value: @date, class: "hidden hidden-date-field") %>
 <%= time_field(:meal, :time, value: @time, class: "hidden hidden-time-field") %>
 
-<div id="myModal" class="reveal-modal" data-reveal>
+<div id="myModal" class="reveal-modal clearfix" data-reveal>
   <h2>You're almost done!</h2>
-  <div class="small-10 large-6 columns">
+  <div class="small-10 large-6 columns clearfix">
     <p class="lead">Choose a date for your meal...</p>
-    <%= date_field(:meal, :time, name: "meal[date]",
-    
-    value: @date, class: "visible-date-field", min: (Time.now.to_datetime + 1).rfc3339.split("T").first) %>
+    <input class="visible-date-field" id="meal_time" name="meal[date]" type="date" value="<%= @date %>" min="<%= (Time.now.to_datetime + 1).rfc3339.split("T").first %>" />
   </div>
   <div class="small-10 large-6 columns">
     <p class="lead">...and a time...</p>
     <%= time_field(:meal, :time, value: @time, class: "visible-time-field") %>
   </div>
   <div class="small-10 large-6 columns">
-    <p class="lead small-text-center">...and you're done!</p>
+    <p class="lead small-text-center">...and you're done!<br>(We'll send an invite email to your friends.)</p>
   </div>
-  <div class="small-10 large-6 columns small-text-center">
+  <div class="small-10 large-6 columns small-text-center clearfix">
     <a class="button alert large pre-submit">FINISHED!</a>
   </div>
 

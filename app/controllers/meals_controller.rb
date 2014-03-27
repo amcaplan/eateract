@@ -182,7 +182,7 @@ class MealsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def meal_params
-      params.require(:meal).permit(:topic_id)
+      params.require(:meal).permit(:topic_id, :message)
     end
 
     def create_or_update
