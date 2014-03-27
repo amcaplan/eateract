@@ -18,13 +18,13 @@ class MealsController < ApplicationController
   # GET /meals/1.json
   def show
     @meal = Meal.find(params[:id])
-    @person = if current_user
-      session[:token] = nil
-      Person.find_by(email: User.where(id: current_user).pluck(:email))
+    if current_user
+      session[:invite] = nil
+      @person = Person.find_by(email: User.where(id: current_user).pluck(:email))
     else
-      session[:token] = params[:invite]
+      session[:invite] ||= params[:invite]
       @meal_person = MealPerson.find_by(token: params[:invite])
-      @meal_person.person if @meal_person
+      @person = @meal_person.person if @meal_person
     end
     if @meal && @person && @meal.people.include?(@person)
       @meal_person ||= @meal.meal_people.find_by(person_id: @person.id)
@@ -112,9 +112,8 @@ class MealsController < ApplicationController
 
   # PUT /meals/1/guests/1
   def change_meal_details
-    meal_person = MealPerson.find_by(token: session[:token])
+    meal_person = MealPerson.find_by(token: session[:invite])
     meal = Meal.find(params[:meal_id])
-
     case params[:commit]
     when "Yes, I'm in!"
       meal_person.attending = true
@@ -131,7 +130,7 @@ class MealsController < ApplicationController
       if current_user
         redirect_to Meal.find(params[:meal_id])
       else
-        redir_string = "#{root_url}meals/#{params[:meal_id]}?invite=#{session[:token]}"
+        redir_string = "#{root_url}meals/#{params[:meal_id]}?invite=#{session[:invite]}"
         redirect_to redir_string
       end
     end

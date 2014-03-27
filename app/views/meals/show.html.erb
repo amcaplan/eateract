@@ -1,9 +1,11 @@
-<p id="notice" class="small-text-center"><%= notice %></p>
+<!-- <p id="notice" class="small-text-center"><%= notice %></p> -->
 <div class="small-12 medium-8 large-6 columns small-centered">
 <%= render partial: 'full_meal_display' %>
 </div>
 <br>
 <br>
 <div class="small-text-center small-12 columns">
-  <%= link_to 'View all my meals', meals_path, class: "button small" %>
+  <% if current_user %>
+    <%= link_to 'View all my meals', meals_path, class: "button small" %>
+  <% end %>
 </div>

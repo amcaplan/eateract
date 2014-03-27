@@ -13,6 +13,19 @@
       </dd>
     </p>
 
+    <% if @meal.message %>
+      <p>
+        <dt class="tagline" style="box-sizing: border-box;color: rgb(34, 34, 34);text-align: left;text-decoration: none solid rgb(0, 140, 186);text-shadow: rgb(0, 0, 0) 0px 0px 2px;border: 0px none rgb(0, 140, 186);font: normal normal bold 16px/25.600000381469727px 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;list-style: none outside none;outline: rgb(0, 140, 186) none 0px">Your host has the following message to add:</dt>
+        <dd style="margin-left: 0;">
+          <div style="overflow: auto; box-shadow: rgb(68, 68, 68) 2px 2px 5px 2px;box-sizing: border-box;color: rgb(34, 34, 34);cursor: default;float: none;position: relative;text-align: left;text-decoration: none solid rgb(34, 34, 34);width: 80%;background: rgba(255, 255, 255, 0.701961) none repeat scroll 0% 0% / auto padding-box border-box;border: 0px none rgb(34, 34, 34);border-radius: 50px 50px 50px 50px;font: normal normal normal 16px/16px 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;margin: auto;margin-top: 30px; outline: rgb(34, 34, 34) none 0px;padding: 30px;">
+            <div style="box-sizing: border-box;color: rgb(34, 34, 34);cursor: default;text-align: center;text-decoration: none solid rgb(34, 34, 34);width: 88%;border: 0px none rgb(34, 34, 34);font: normal normal normal 16px/16px 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;outline: rgb(34, 34, 34) none 0px;margin: auto">
+              <h3 style="box-sizing: border-box;color: rgb(111, 111, 111);cursor: default;text-align: left;text-decoration: none solid rgb(111, 111, 111);text-rendering: optimizelegibility;width: 440px;border: 0px none rgb(111, 111, 111);font: normal normal normal 27px/37.79999923706055px 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;margin: 3.200000047683716px 0px 8px;outline: rgb(111, 111, 111) none 0px;"><%= simple_format @meal.message %></h3>
+            </div>
+          </div>
+        </dd>
+      </p>
+    <% end %>
+    
     <p>
       <dt style="box-sizing: border-box;color: rgb(34, 34, 34);text-align: left;text-decoration: none solid rgb(0, 140, 186);text-shadow: rgb(0, 0, 0) 0px 0px 2px;border: 0px none rgb(0, 140, 186);font: normal normal bold 16px/25.600000381469727px 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;list-style: none outside none;outline: rgb(0, 140, 186) none 0px">Would you like to volunteer to bring something? Your host has requested that these foods be brought:</dt>
       <dd style="margin-left: 0;">

@@ -13,7 +13,7 @@
           <h4>Are you able to make it?</h4>
         </dt>
         <dd>
-          <%= form_tag "/meals/#{@meal.id}/guests/#{@person.id}", method: 'put', class: "meal-detail-form" do %>
+          <%= form_tag "/meals/#{@meal.id}/guests/#{@person.id}?invite=#{params[:invite]}", method: 'put', class: "meal-detail-form" do %>
             <%= submit_tag "Yes, I'm in!", class: "button small-5 columns" %>
             <%= submit_tag "Sorry, no...", class: "button alert small-5 columns" %>
           <% end %>
