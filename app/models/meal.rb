@@ -83,8 +83,8 @@ class Meal < ActiveRecord::Base
     guests_not_responded.size
   end
 
-  def unclaimed_recipes
-    Recipe.where(id: meal_recipes.where(person_id: nil).pluck(:recipe_id)).all
+  def unclaimed_meal_recipes
+    meal_recipes.where(person_id: nil).all
   end
 
   def claimed_meal_recipes

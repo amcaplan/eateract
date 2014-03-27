@@ -12,12 +12,6 @@ class MealsController < ApplicationController
     @upcoming_meals = meals.select{|meal| meal.finished && meal.time > Time.now}
     @past_meals = meals.select{|meal| meal.finished && meal.time < Time.now}
     @unfinished_meals = meals.select{|meal| !meal.finished && meal.host.pluck(:id)[0] == session[:user_id]}
-    puts "upcoming"
-    puts @upcoming_meals
-    puts "past"
-    puts @past_meals
-    puts "unfinished"
-    puts @unfinished_meals
   end
 
   # GET /meals/1
@@ -29,7 +23,7 @@ class MealsController < ApplicationController
     else
       session[:token] = params[:invite]
       @meal_person = MealPerson.find_by(token: params[:invite])
-      @meal_person.person if mp
+      @meal_person.person if @meal_person
     end
     redirect_to root_url unless @meal && @person && @meal.people.include?(@person)
     @meal_person ||= @meal.meal_people.find_by(person_id: @person.id) if @person
@@ -107,12 +101,13 @@ class MealsController < ApplicationController
   # PUT /meals/1/guests/1
   def signup_for_recipes
     person_id = if current_user
-      params[:person_id]
+      session[:user_id]
     else
       MealPerson.find_by(token: session[:token]).person.id
     end
     meal_recipes = MealRecipe.where(id: params[:meal_recipes])
     meal_recipes.each{|mp| mp.person_id = person_id}.each(&:save)
+    binding.pry
     if current_user
       redirect_to Meal.find(params[:meal_id])
     else
