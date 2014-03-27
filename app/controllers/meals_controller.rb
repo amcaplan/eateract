@@ -31,7 +31,7 @@ class MealsController < ApplicationController
       mp = MealPerson.find_by(token: params[:invite])
       mp.person if mp
     end
-    redirect_to root_url unless @meal && @person
+    redirect_to root_url unless @meal && @person && @meal.people.include?(@person)
     @meal_person = @meal.meal_people.find_by(person_id: @person.id) if @person
   end
 
