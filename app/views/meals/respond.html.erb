@@ -1,0 +1,24 @@
+<div class="small-12 medium-8 large-6 columns small-centered">
+  <dl class="meal-container meal-li round one-full-meal">
+    <div class="row">
+      <div class="small-12 columns">
+        <dt>
+          <h3>Meal Organized by <%= @meal.host.first.name %></h3>
+        </dt>
+        <dd>
+          <%= @meal.time_string %>
+        </dd>
+
+        <dt>
+          <h4>Are you able to make it?</h4>
+        </dt>
+        <dd>
+          <%= form_tag "/meals/#{@meal.id}/guests/#{@person.id}", method: 'put', class: "meal-detail-form" do %>
+            <%= submit_tag "Yes, I'm in!", class: "button small-5 columns" %>
+            <%= submit_tag "Sorry, no...", class: "button alert small-5 columns" %>
+          <% end %>
+        </dd>
+      </div>
+    </div>
+  </dl>
+</div>

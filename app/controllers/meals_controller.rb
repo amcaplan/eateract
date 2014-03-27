@@ -1,5 +1,5 @@
 class MealsController < ApplicationController
-  before_action :redirect_if_not_logged_in, except: [:show, :signup_for_recipes]
+  before_action :redirect_if_not_logged_in, except: [:show, :change_meal_details]
   before_action :set_meal, only: [:show, :edit, :update, :destroy]
   before_action :dont_show_new_meal_button, only: [:new, :edit]
 
@@ -19,14 +19,26 @@ class MealsController < ApplicationController
   def show
     @meal = Meal.find(params[:id])
     @person = if current_user
+      session[:token] = nil
       Person.find_by(email: User.where(id: current_user).pluck(:email))
     else
       session[:token] = params[:invite]
       @meal_person = MealPerson.find_by(token: params[:invite])
       @meal_person.person if @meal_person
     end
-    redirect_to root_url unless @meal && @person && @meal.people.include?(@person)
-    @meal_person ||= @meal.meal_people.find_by(person_id: @person.id) if @person
+    if @meal && @person && @meal.people.include?(@person)
+      @meal_person ||= @meal.meal_people.find_by(person_id: @person.id)
+      case @meal_person.attending
+      when true
+        render 'show'
+      when nil
+        render 'respond'
+      when false
+        redirect_to root_url
+      end
+    else
+      redirect_to root_url
+    end
   end
 
   # GET /meals/new
@@ -99,20 +111,29 @@ class MealsController < ApplicationController
   end
 
   # PUT /meals/1/guests/1
-  def signup_for_recipes
-    person_id = if current_user
-      session[:user_id]
-    else
-      MealPerson.find_by(token: session[:token]).person.id
-    end
-    meal_recipes = MealRecipe.where(id: params[:meal_recipes])
-    meal_recipes.each{|mp| mp.person_id = person_id}.each(&:save)
-    binding.pry
-    if current_user
-      redirect_to Meal.find(params[:meal_id])
-    else
-      redir_string = "#{root_url}meals/#{params[:meal_id]}?invite=#{session[:token]}"
-      redirect_to redir_string
+  def change_meal_details
+    meal_person = MealPerson.find_by(token: session[:token])
+    meal = Meal.find(params[:meal_id])
+
+    case params[:commit]
+    when "Yes, I'm in!"
+      meal_person.attending = true
+      meal_person.save
+      redirect_to meal
+    when "Sorry, no..."
+      meal_person.attending = false
+      meal_person.save
+      redirect_to root_url
+    else # Signing up for recipes
+      person_id = current_user ? session[:user_id] : meal_person.person.id
+      meal_recipes = MealRecipe.where(id: params[:meal_recipes])
+      meal_recipes.each{|mp| mp.person_id = person_id}.each(&:save)
+      if current_user
+        redirect_to Meal.find(params[:meal_id])
+      else
+        redir_string = "#{root_url}meals/#{params[:meal_id]}?invite=#{session[:token]}"
+        redirect_to redir_string
+      end
     end
   end
 

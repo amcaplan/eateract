@@ -80,10 +80,10 @@
               <% if @meal.unclaimed_meal_recipes.size > 0 %>
                 <dt>Would you like to volunteer to bring something?</dt>
                 <dd>
-                  <%= form_tag "/meals/#{@meal.id}/guests/#{@person.id}", method: 'put', class: "recipe-form" do %>
+                  <%= form_tag "/meals/#{@meal.id}/guests/#{@person.id}", method: 'put', class: "meal-detail-form" do %>
                     <% @meal.unclaimed_meal_recipes.each do |m_r| %>
                       <input type="checkbox" name="meal_recipes[]" value="<%= m_r.id %>" <%= "checked" if @meal_person.person_id == @person %>>
-                      <a href="<%= m_r.recipe.url %>"><%= m_r.recipe.name %></a><br>
+                      <a href="<%= m_r.recipe.url %>" target="_blank"><%= m_r.recipe.name %></a><br>
                     <% end %>
                     <br>
                     <div class="small-text-center">

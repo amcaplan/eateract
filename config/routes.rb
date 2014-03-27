@@ -1,6 +1,7 @@
 Eateract::Application.routes.draw do
   resources :meals do
-    resources :ratings
+    # THIS SHOULD BE REINSTATED WHEN RATINGS ARE IMPLEMENTED
+    # resources :ratings
   end
 
   # THIS MAY GET PUT IN LATER ONCE RATINGS ARE IMPLEMENTED
@@ -19,7 +20,7 @@ Eateract::Application.routes.draw do
   match 'recipes/:recipe_id', to: 'recipes#get_details', via: [:get]
 
   # Routes for guests to update meals
-  match 'meals/:meal_id/guests/:person_id', to: 'meals#signup_for_recipes', via: [:put]
+  match 'meals/:meal_id/guests/:person_id', to: 'meals#change_meal_details', via: [:put]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
