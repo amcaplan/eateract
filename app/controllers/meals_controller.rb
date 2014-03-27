@@ -28,11 +28,11 @@ class MealsController < ApplicationController
       Person.find_by(email: User.where(id: current_user).pluck(:email))
     else
       session[:token] = params[:invite]
-      mp = MealPerson.find_by(token: params[:invite])
-      mp.person if mp
+      @meal_person = MealPerson.find_by(token: params[:invite])
+      @meal_person.person if mp
     end
     redirect_to root_url unless @meal && @person && @meal.people.include?(@person)
-    @meal_person = @meal.meal_people.find_by(person_id: @person.id) if @person
+    @meal_person ||= @meal.meal_people.find_by(person_id: @person.id) if @person
   end
 
   # GET /meals/new
@@ -74,8 +74,7 @@ class MealsController < ApplicationController
     respond_to do |format|
       if @meal.save
         if params[:commit] == "Submit meal"
-          @meal.finished = true
-          @meal.save
+          finish_meal
         end
         format.html { redirect_to @meal, notice: 'Meal was successfully created.' }
         format.json { render action: 'show', status: :created, location: @meal }
@@ -94,8 +93,7 @@ class MealsController < ApplicationController
     respond_to do |format|
       if @meal.update(meal_params)
         if params[:commit] == "Submit meal"
-          @meal.finished = true
-          @meal.save
+          finish_meal
         end
         format.html { redirect_to @meal, notice: 'Meal was successfully updated.' }
         format.json { head :no_content }
@@ -188,5 +186,13 @@ class MealsController < ApplicationController
       @meal.time = Chronic.parse("#{params[:meal][:date]} #{params[:meal][:time]}")
 
       params[:commit] = "Stash changes" if recipes.empty? || people.empty? || !@meal.time
+    end
+
+    def finish_meal
+      @meal.finished = true
+      @meal.save
+      @meal.meal_people_guests.each do |guest|
+        InvitationMailer.invited_email(guest).deliver
+      end
     end
 end

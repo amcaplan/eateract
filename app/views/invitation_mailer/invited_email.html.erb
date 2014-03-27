@@ -2,16 +2,15 @@
 <html>
   <head>
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-    <style>
-    
-    </style>
   </head>
   <body>
-    <div style="text-align: center">
-      <h1>Congratulations, <%= @person.name %>, you've been invited to a meal!</h1>
-      <%= image_tag attachments['logo.png'].url %>
-      <div>
-        <%= render partial: 'meal_info' %>
+    <div style="text-align: center; width: 100%">
+      <div style="box-shadow: rgb(68, 68, 68) 1px 1px 3px 1px;box-sizing: border-box;color: rgb(34, 34, 34);cursor: default;height: 156.796875px;text-align: center;text-decoration: none solid rgb(34, 34, 34);text-shadow: rgb(102, 102, 102) 0px 0px 5px;width: 80%;background: rgba(203, 30, 30, 0.8) none repeat scroll 0% 0% / auto padding-box border-box;border: 2px solid rgb(0, 0, 0);border-radius: 10px 10px 10px 10px;font: normal normal normal 16px/25.600000381469727px 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;list-style: none outside none;margin: auto;outline: rgb(34, 34, 34) none 0px;padding: 5px;">
+        <h1 style="box-sizing: border-box;color: rgb(34, 34, 34);cursor: default;height: 61px;text-decoration: none solid rgb(34, 34, 34);text-rendering: optimizelegibility;width: 95%;border: 0px none rgb(34, 34, 34);font: normal normal normal 44px/61.599998474121094px 'Helvetica Neue', Helvetica, Helvetica, Arial, serif;margin: 3.200000047683716px 0px 8px;outline: rgb(34, 34, 34) none 0px;text-align: center;">Congratulations, <%= @person.name %>, you've been invited to a meal!</h1>
+        <%= image_tag attachments['logo.png'].url %>
+        <div>
+          <%= render partial: 'meal_info' %>
+        </div>
       </div>
     </div>
   </body>

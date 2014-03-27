@@ -1,33 +1,36 @@
 <dt>
-  <h3>This is an invite from <%= @meal.host.first.name %>.</h3>
+  <h3 style="box-sizing: border-box;color: rgb(151, 27, 27);cursor: default;height: 37px;text-decoration: none solid rgb(111, 111, 111);text-rendering: optimizelegibility;width: 100%;text-align: center;border: 0px none rgb(111, 111, 111);font: normal normal normal 27px/37.79999923706055px 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;margin: 3.200000047683716px 0px 8px;outline: rgb(111, 111, 111) none 0px;">This is an invite from <%= @meal.host.first.name %> for a meal on <%= @meal.time_string %>.</h3>
 </dt>
-<dd>
+<dd style="margin-left: 0">
   <dl>
-    <dt><%= @meal.time_string %></dt><dd></dd>
-    
     <p>
-      <dt>You're invited to join a meal and engage in deep conversation about <%= @meal.topic %>. In preparation, your host has requested that you look over the following links:</dt>
-      <dd>
-        <ul>
+      <dt class="tagline" style="box-sizing: border-box;color: rgb(34, 34, 34);text-align: left;text-decoration: none solid rgb(0, 140, 186);text-shadow: rgb(0, 0, 0) 0px 0px 2px;border: 0px none rgb(0, 140, 186);font: normal normal bold 16px/25.600000381469727px 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;list-style: none outside none;outline: rgb(0, 140, 186) none 0px">You're invited to join a meal and engage in deep conversation about <%= @meal.topic.name %>. In preparation, your host has requested that you look over the following links:</dt>
+      <dd style="margin-left: 0;">
+        <ul style="text-align: left">
         <% @meal.links.each do |link| %>
-          <li><a href="<%= link.url %>"><%= link.name %></a></li>
+          <li><a href="<%= link.url %>" style="box-sizing: border-box;color: rgb(7, 0, 186);text-align: left;text-decoration: none solid rgb(0, 140, 186);text-shadow: rgb(0, 0, 0) 0px 0px 4px;border: 0px none rgb(0, 140, 186);font: normal normal normal 16px/25.600000381469727px 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;outline: rgb(0, 140, 186) none 0px;"><%= link.name %></a></li>
         <% end %>
       </dd>
     </p>
 
     <p>
-      <dt>Would you like to volunteer to bring something? Your host has requested that these foods be brought:</dt>
-      <dd>
-        <% @meal.recipes.each do |recipe| %>
-          <a href="<%= recipe.url %>"><%= recipe.name %></a><br>
-        <% end %>
+      <dt style="box-sizing: border-box;color: rgb(34, 34, 34);text-align: left;text-decoration: none solid rgb(0, 140, 186);text-shadow: rgb(0, 0, 0) 0px 0px 2px;border: 0px none rgb(0, 140, 186);font: normal normal bold 16px/25.600000381469727px 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;list-style: none outside none;outline: rgb(0, 140, 186) none 0px">Would you like to volunteer to bring something? Your host has requested that these foods be brought:</dt>
+      <dd style="margin-left: 0;">
+        <ul style="text-align: left">
+          <% @meal.recipes.each do |recipe| %>
+            <li>
+              <a href="<%= recipe.url %>" style="box-sizing: border-box;color: rgb(7, 0, 186);text-align: left;text-decoration: none solid rgb(0, 140, 186);text-shadow: rgb(0, 0, 0) 0px 0px 4px;border: 0px none rgb(0, 140, 186);font: normal normal normal 16px/25.600000381469727px 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;outline: rgb(0, 140, 186) none 0px;"><%= recipe.name %></a><br>
+            </li>
+          <% end %>
+        </ul>
       </dd>
     </p>
 
     <p>
-      <dt>Let your host know whether you can make it, and view more information!</dt>
-      <dd>
-        <a href="<%= "#{meal_url(@meal)}?invite=#{@meal_person.token}" %>"><button>CLICK HERE</button></a><br>
+      <dt style="box-sizing: border-box;color: rgb(34, 34, 34);text-align: center;text-decoration: none solid rgb(0, 140, 186);text-shadow: rgb(0, 0, 0) 0px 0px 2px;border: 0px none rgb(0, 140, 186);font: normal normal bold 16px/25.600000381469727px 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;list-style: none outside none;outline: rgb(0, 140, 186) none 0px">Let your host know whether you can make it, and view more information!</dt>
+      <br>
+      <dd style="margin-left: 0; text-align: center">
+        <a href="<%= "#{meal_url(@meal)}?invite=#{@meal_person.token}" %>" style="text-align: center"><button style="box-sizing: border-box;color: rgb(255, 255, 255);cursor: pointer;display: inline-block;height: 61px;position: relative;text-align: center;text-decoration: none solid rgb(255, 255, 255);width: 229px;background: rgb(0, 140, 186) none repeat scroll 0% 0% / auto padding-box border-box;border: 0px solid rgb(0, 112, 149);font: normal normal normal 20px/normal 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;outline: rgb(255, 255, 255) none 0px;padding: 18px 36px 19px;transition: background-color 0.3s ease-out 0s;">CLICK HERE</button></a><br>
       </dd>
     </p>
   </dl>

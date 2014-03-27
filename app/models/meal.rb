@@ -19,8 +19,8 @@ class Meal < ActiveRecord::Base
     time ? time.strftime('%A, %b %-d, %Y at %l:%M%p') : "an undetermined time"
   end
 
-  def add_recipe(recipe, quantity = 1)
-    MealRecipe.create(meal: self, recipe: recipe, quantity: quantity)
+  def add_recipe(recipe)
+    MealRecipe.create(meal: self, recipe: recipe)
   end
 
   def host
@@ -44,7 +44,11 @@ class Meal < ActiveRecord::Base
   end
 
   def guests
-    Person.where(id: meal_people.where.not(host_relationship: "self").pluck(:person_id))
+    Person.where(id: meal_people_guests.pluck(:person_id))
+  end
+
+  def meal_people_guests
+    meal_people.where.not(host_relationship: "self")
   end
 
   def guest_count
