@@ -48,7 +48,7 @@ class Meal < ActiveRecord::Base
   end
 
   def guest_count
-    meal_people.size
+    guests.size
   end
 
   def active_guest_count
@@ -83,7 +83,7 @@ class Meal < ActiveRecord::Base
     Recipe.where(id: meal_recipes.where(person_id: nil).pluck(:recipe_id)).all
   end
 
-  def claimed_recipes
-    Recipe.where(id: meal_recipes.where.not(person_id: nil).pluck(:recipe_id)).all
+  def claimed_meal_recipes
+    meal_recipes.where.not(person_id: nil).all
   end
 end
