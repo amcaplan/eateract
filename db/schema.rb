@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140327203430) do
+ActiveRecord::Schema.define(version: 20140331164901) do
 
   create_table "links", force: true do |t|
     t.string   "name"
@@ -46,22 +46,12 @@ ActiveRecord::Schema.define(version: 20140327203430) do
   add_index "meal_people", ["meal_id"], name: "index_meal_people_on_meal_id"
   add_index "meal_people", ["person_id"], name: "index_meal_people_on_person_id"
 
-  create_table "meal_recipes", force: true do |t|
-    t.integer  "meal_id"
-    t.integer  "recipe_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "person_id"
-  end
-
-  add_index "meal_recipes", ["meal_id"], name: "index_meal_recipes_on_meal_id"
-  add_index "meal_recipes", ["person_id"], name: "index_meal_recipes_on_person_id"
-  add_index "meal_recipes", ["recipe_id"], name: "index_meal_recipes_on_recipe_id"
+# Could not dump table "meal_recipes" because of following NoMethodError
+#   undefined method `[]' for nil:NilClass
 
   create_table "meals", force: true do |t|
     t.datetime "time"
     t.integer  "topic_id"
-    t.string   "cuisine_type"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "finished"
@@ -90,7 +80,6 @@ ActiveRecord::Schema.define(version: 20140327203430) do
 
   create_table "recipes", force: true do |t|
     t.string   "name"
-    t.string   "cuisine_type"
     t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"

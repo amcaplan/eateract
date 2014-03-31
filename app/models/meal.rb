@@ -84,10 +84,10 @@ class Meal < ActiveRecord::Base
   end
 
   def unclaimed_meal_recipes
-    meal_recipes.where(person_id: nil).all
+    meal_recipes.where(person: nil).all
   end
 
   def claimed_meal_recipes
-    meal_recipes.where.not(person_id: nil).all
+    meal_recipes.where.not(person: nil).all
   end
 end

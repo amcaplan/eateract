@@ -8,7 +8,7 @@ class MealsController < ApplicationController
   def index
     Meal.joins(:meal_people).where("meal_people.person_id" => current_user).
       select{|meal| !meal.finished && meal.time && meal.time < Time.now}.map(&:delete)
-    meals = Meal.joins(:meal_people).where("meal_people.person_id" => current_user)
+    meals = Meal.joins(:meal_people).where("meal_people.person_id" => current_user.person.id)
     @upcoming_meals = meals.select{|meal| meal.finished && meal.time > Time.now}
     @past_meals = meals.select{|meal| meal.finished && meal.time < Time.now}
     @unfinished_meals = meals.select{|meal| !meal.finished && meal.host.pluck(:id)[0] == session[:user_id]}
@@ -23,7 +23,7 @@ class MealsController < ApplicationController
       @person = Person.find_by(email: User.where(id: current_user).pluck(:email))
     else
       session[:invite] ||= params[:invite]
-      @meal_person = MealPerson.find_by(token: params[:invite])
+      @meal_person = MealPerson.find_by(token: session[:invite])
       @person = @meal_person.person if @meal_person
     end
     if @meal && @person && @meal.people.include?(@person)
@@ -126,7 +126,7 @@ class MealsController < ApplicationController
     else # Signing up for recipes
       person_id = current_user ? session[:user_id] : meal_person.person.id
       meal_recipes = MealRecipe.where(id: params[:meal_recipes])
-      meal_recipes.each{|mp| mp.person_id = person_id}.each(&:save)
+      meal_recipes.each{|mp| mp.person = person_id}.each(&:save)
       if current_user
         redirect_to Meal.find(params[:meal_id])
       else
@@ -167,7 +167,12 @@ class MealsController < ApplicationController
       people = people.select { |person|
         !person[:name].empty? && person[:email].match(/.+@.+\..+/i)
       }.map do |person|
-        Person.find_or_create_by(name: person[:name], email: person[:email])
+        existing_person = Person.find_by(email: person[:email])
+        if existing_person && (existing_person.user || existing_person.name == person[:name])
+          existing_person
+        else
+          Person.create(name: person[:name], email: person[:email])
+        end
       end
     end
 
@@ -191,6 +196,7 @@ class MealsController < ApplicationController
         @meal = Meal.create(meal_params)
       end
       @meal.people = people
+      binding.pry
       @meal.meal_people.each { |mp|
         mp.host_relationship = params[:person].find{|person|
           Person.find_by(name: person[:name], email: person[:email]).id == mp.person_id

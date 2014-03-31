@@ -1,7 +1,7 @@
 class Person < ActiveRecord::Base
   include Rateable
   
-  has_many :users
+  has_one :user
   has_many :ratings
   has_many :meal_people, dependent: :destroy
   has_many :meals, through: :meal_people

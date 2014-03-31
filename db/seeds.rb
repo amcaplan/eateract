@@ -8,8 +8,8 @@
   person1 = Person.create(name: "Ariel Caplan", email: ENV["ARIELS_EMAIL"])
   person2 = Person.create(name: "Nonexistent Person", email: "fake_email@gmail.com")
   
-  recipe1 = Recipe.create(name: "steak", cuisine_type: "American food", url: "example.com")
-  Recipe.create(name: "French fries", cuisine_type: "American", url: "example2.com/fries")
+  recipe1 = Recipe.create(name: "steak", url: "example.com")
+  Recipe.create(name: "French fries", url: "example2.com/fries")
   
   topic1 = Topic.create(name: "Attitudes Toward Death")
   topic2 = Topic.create(name: "The Internet and Society")
