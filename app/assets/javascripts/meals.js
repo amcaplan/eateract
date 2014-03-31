@@ -34,38 +34,9 @@ var trackLinks = function() {
   });
 };
 
-var displayLinksForSelected = function() {
-  var selected = $(".topic-title-select").find(":selected");
-  var topicID = selected.val();
+var bindLinks = function() {
   var topicLinks = $(".topic-links");
-  var topicDescriptions = $(".topic-descriptions");
   var topicDescriptionsContainer = $('.topic-descriptions-container');
-  if (topicID == "") {
-    topicLinks.slideUp().html("");
-    topicDescriptionsContainer.slideUp().find(".topic-descriptions").html("");
-  }
-  else {
-    $.getJSON("../../topics/" + topicID + "/links", function(response){
-      var output = "<h3>" + selected.text() + "</h3><br />";
-      var summary = "";
-      var currentSummary = "";
-      output += '<h4 class="subheader">(We recommend choosing about 3 links to send to your friends.)</h4><br /><p>';
-      $.each(response, function(index, link){
-        output += '<div class="link-option"><p><input id="link'+index+'" name="meal[link_ids][]" type="checkbox" value="'+link.id +'"'
-        if(checkedLinks.indexOf(link.id.toString()) > -1){ output += "checked"; }
-        output += ' /> <a href="' + link.url + '" target="_blank">';
-        output += link.name + "</a>";
-        output += ' <span id="show-' + index + '" class="hide-for-large-up">(+ Show summary)</span>'
-        currentSummary = '<div class="hidden index-' + index + '">' + link.summary + '</div></div>';
-        summary += currentSummary;
-        output += '<div class="hide-for-large-up">' + currentSummary + '</div></p>';
-      });
-      output += "</p>";
-      topicLinks.html(output).slideDown();
-      topicDescriptionsContainer.slideDown();
-      topicDescriptions.append($(summary)).slideDown();
-    });
-  }
   topicLinks.on("mouseover", ".link-option", function(){
     if ($(window).width() > 1025) {
       var id = $(this).find("input").attr("id").substring(4);
@@ -87,6 +58,44 @@ var displayLinksForSelected = function() {
       $(this).text("(+ Show summary)");
     }
   });
+}
+
+var displayLinksForSelected = function() {
+  var selected = $(".topic-title-select").find(":selected");
+  var topicID = selected.val();
+  var topicLinks = $(".topic-links");
+  var topicDescriptions = $(".topic-descriptions");
+  var topicDescriptionsContainer = $('.topic-descriptions-container');
+  
+  var generateLinkHTML = function(response){
+    var output = "<h3>" + selected.text() + "</h3><br />";
+    var summary = "";
+    var currentSummary = "";
+    output += '<h4 class="subheader">(We recommend choosing about 3 links to send to your friends.)</h4><br /><p>';
+    var assembleLinkInfo = function(index, link){
+      output += '<div class="link-option"><p><input id="link'+index+'" name="meal[link_ids][]" type="checkbox" value="'+link.id +'"'
+      if(checkedLinks.indexOf(link.id.toString()) > -1){ output += "checked"; }
+      output += ' /> <a href="' + link.url + '" target="_blank">';
+      output += link.name + "</a>";
+      output += ' <span id="show-' + index + '" class="hide-for-large-up">(+ Show summary)</span>'
+      currentSummary = '<div class="hidden index-' + index + '">' + link.summary + '</div></div>';
+      summary += currentSummary;
+      output += '<div class="hide-for-large-up">' + currentSummary + '</div></p>';
+    };
+
+    $.each(response, assembleLinkInfo);
+    output += "</p>";
+    topicLinks.html(output).slideDown();
+    topicDescriptionsContainer.slideDown();
+    topicDescriptions.append($(summary)).slideDown();
+  };
+
+  if (topicID == "") {
+    topicLinks.slideUp().html("");
+    topicDescriptionsContainer.slideUp().find(".topic-descriptions").html("");
+  } else {
+    $.getJSON("../../topics/" + topicID + "/links", generateLinkHTML);
+  }
 };
 
 var displayLinks = function(){
@@ -112,7 +121,6 @@ var removeMenuItems = function(link) {
 var addToMenu = function(recipeID, recipeName, newMenuItem){
   var newMenuItem = $(".menu.item.hidden").clone();
   newMenuItem.prop("id", recipeID);
-  // newMenuItem.prepend(checkbox.clone().addClass("hidden"));
   newMenuItem.prepend(recipeName);
   newMenuItem.appendTo($(".menu.panel")) && newMenuItem.fadeIn() && newMenuItem.removeClass("hidden");
   newMenuItem.find(".remove-menu-item").on("click", newMenuItem.find("remove-menu-item"), removeMenuItems);
@@ -121,25 +129,26 @@ var addToMenu = function(recipeID, recipeName, newMenuItem){
 var tableize = function(queryString) {
   $.getJSON("../../recipes/search/" + queryString, function(response) {
     $(".recipes-attribution").html(response.attribution.html);
-    
-    var tr = $('<tr class="recipe-info">'+
-      '<td class="recipe-checkbox"></td>' +
-      '<td class="recipe-image"></td>' +
-      '<td class="recipe-name"></td>' +
-      '<td class="recipe-course"></td>' +
-      '<td class="recipe-cuisine"></td>' +
-      '<td class="recipe-rating"></td>' +
-      '<td class="recipe-source"></td>' +
-    '</tr>');
 
-    $.each(response.matches, function(index, recipe) {
-      var new_tr = tr.clone();
+    var generateNewTr = function(index, recipe) {
+      var new_tr = $('<tr class="recipe-info">'+
+        '<td class="recipe-checkbox"></td>' +
+        '<td class="recipe-image"></td>' +
+        '<td class="recipe-name"></td>' +
+        '<td class="recipe-course"></td>' +
+        '<td class="recipe-cuisine"></td>' +
+        '<td class="recipe-rating"></td>' +
+        '<td class="recipe-source"></td>' +
+      '</tr>');
+
       var checkboxName = recipe.id;
-      var checked = "";
       // Check whether to check this box
       if (recipesInfo[checkboxName]) {
-        checked = " checked";
+        var checked = " checked";
+      } else {
+        var checked = "";
       }
+
       // Populate the new row
       new_tr.find(".recipe-checkbox").html('<input id="' + checkboxName +
         '" name="recipes[]" type="checkbox" value="' + checkboxName + '"' +
@@ -161,28 +170,28 @@ var tableize = function(queryString) {
       if (recipe.sourceDisplayName) {
         new_tr.find(".recipe-source").html(recipe.sourceDisplayName);
       }
-      // Add the row
-      new_tr.appendTo($("tbody"));
-      // Add event handlers
-      new_tr.find("input").click( function(){
+
+      // Add the row to the DOM
+      new_tr.appendTo($("tbody")).find("input").click( function(){
         var checkbox = $(this);
         var recipeID = checkbox.prop("value");
         // When checked, add to the menu
         if ($(this).is(':checked')) {
           var recipeName = checkbox.parent().parent().find(".recipe-name").text();
-          var recipeID = checkbox.prop("id"); 
           addToMenu(recipeID, recipeName);
-          // Also add to recipesInfo
           recipesInfo[recipeID] = recipeName;
         // When unchecked, remove from the menu
         } else {
           $(".menu.panel").find($("#" + recipeID)).fadeOut(function() {$(this).remove()});
-          // Also remove from recipesInfo
           delete recipesInfo[recipeID];
         }
         updateRecipesInfo();
       });
-    }) && $(".recipe-container").slideDown();
+      return true;
+    };
+
+    // ACTUALLY DO STUFF
+    $.each(response.matches, generateNewTr) && $(".recipe-container").slideDown();
   });
 };
 
@@ -253,6 +262,7 @@ var initializeMenu = function() {
 }
 
 $(document).ready(function(){
+  bindLinks();
   trackLinks();
   enableAddGuestLink();
   displayLinks();
