@@ -1,7 +1,7 @@
 require 'bundler/capistrano'
 
 set :application, "eateract"
-set :repository,  "github.com/amcaplan/eateract"
+set :repository,  "git@github.com:amcaplan/eateract.git"
 
 set :user, 'amcaplan'
 set :deploy_to, "/home/#{user}/#{application}"
