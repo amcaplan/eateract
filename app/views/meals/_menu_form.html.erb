@@ -19,13 +19,9 @@
     <table class="recipes-table">
       <thead>
         <tr>
-          <th></th>
-          <th>Image</th>
-          <th>Recipe</th>
-          <th>Course</th>
-          <th>Cuisine</th>
-          <th>Yummly Rating</th>
-          <th>Source</th>
+          <% ["", "Image", "Recipe", "Course", "Cuisine", "Yummly Rating", "Source"].each do |th| %>
+            <%= content_tag(:th, th) %>
+          <% end %>
         </tr>
       </thead>
       <tbody class="recipes-on-display">

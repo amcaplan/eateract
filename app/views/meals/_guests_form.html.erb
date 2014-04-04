@@ -8,38 +8,37 @@
     <% @people.each_with_index do |person, index| %>
       <div class="row">
       <%= f.fields_for(person) do |ff| %>
-        <div class="medium-4 small-12 columns">
-          Name: <%= ff.text_field :name, name: "person[][name]" %>
-        </div>
-        <div class="medium-4 small-12 columns">
-          Email: <%= ff.text_field :email, name: "person[][email]" %>
-        </div>
-        <div class="medium-4 small-12 columns">
-          <% mp = person.meal_people.where(meal: @meal).first %>
-          Relationship: <%= select_tag(:host_relationship,
-            options_for_select(['friend','relative','neighbor',
-              'coworker', 'student','teacher','clergy', 'other'],
+        <%= person_field("Name:#{ff.text_field :name, name: "person[][name]"}") %>
+        <%= person_field("Email:#{ff.text_field :email, name: "person[][email]"}") %>
+        <% mp = person.meal_people.where(meal: @meal).first %>
+        <%= person_field do %>
+            Relationship:
+            <%= select_tag(:host_relationship,
+              options_for_select(['friend','relative','neighbor',
+                'coworker', 'student','teacher','clergy', 'other'],
                 [(mp.host_relationship if mp)]),
               name: "person[][host_relationship]",
-              prompt: "Who is s/he to you?") %><br>
-        </div>
-        <%= raw("<hr>") unless index == @people.length - 1 %>
+              prompt: "Who is s/he to you?") %>
+        <% end %>
+        <br>
+        <%= tag(:hr) unless index == @people.length - 1 %>
       <% end %>
       </div>
     <% end %>
-    <a class="add-guest">(+) Add another guest</a><br><br>
+    <a class="add-guest">(+) Add another guest</a><br>
     <div class="hidden new-guest-form row">
       <hr>
       <%= f.fields_for(Person.new) do |ff| %>
-        <div class="medium-4 small-12 columns">
-          Name: <%= ff.text_field :name, name: "person[][name]" %>
-        </div>
-        <div class="medium-4 small-12 columns">
-          Email: <%= ff.text_field :email, name: "person[][email]" %>
-        </div>
-        <div class="medium-4 small-12 columns">
-          Relationship: <%= select_tag(:host_relationship, options_for_select(['friend','relative','neighbor', 'coworker', 'student','teacher','clergy', 'other']), name: "person[][host_relationship]", prompt: "Who is s/he to you?") %><br>
-        </div>
+        <%= person_field("Name:#{ff.text_field :name, name: "person[][name]"}") %>
+        <%= person_field("Email:#{ff.text_field :email, name: "person[][email]"}") %>
+        <%= person_field do %>
+          Relationship:
+          <%= select_tag(:host_relationship,
+            options_for_select(['friend','relative','neighbor',
+              'coworker', 'student','teacher','clergy', 'other']),
+            name: "person[][host_relationship]",
+            prompt: "Who is s/he to you?") %>
+        <% end %>
       <% end %>
     </div>
     <div class="tab-around-links small-8 medium-4 columns small-centered">

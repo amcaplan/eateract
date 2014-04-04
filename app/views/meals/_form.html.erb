@@ -1,26 +1,16 @@
 <%= form_for @meal, class: "meal-form" do |f| %>
   <dl class="tabs" data-tab>
-    <dd class="active"><a href="#guests">Choose Guests</a></dd>
-    <dd class="topic-tab"><a href="#topic">Initiate the Conversation</a></dd>
-    <dd><a href="#food">Design the Menu</a></dd>
-    <dd><a href="#message">Tell Your Friends!</a></dd>
+    <%= tab_dd("Choose Guests", "#guests", true) %>
+    <%= tab_dd("Initiate the Conversation", "#topic", false, "topic-tab") %>
+    <%= tab_dd("Design the Menu", '#food') %>
+    <%= tab_dd("Tell Your Friends!", '#message') %>
   </dl>
   <div class="tabs-content">
-    <div class="content active" id="guests">
-      <%= render partial: 'guests_form', locals: {f: f} %>
-    </div>
-    <div class="content" id="topic" data-equalizer-watch>
-      <%= render partial: 'topics_form', locals: {f: f} %>
-    </div>
-    <div class="content" id="food">
-      <%= render partial: 'menu_form', locals: {f: f} %>
-    </div>
-    <div class="content" id="message">
-      <%= render partial: 'message_form', locals: {f: f} %>
-    </div>
-    <div class="content" id="time">
-      <%= render partial: 'time_form', locals: {f: f} %>
-    </div>
+    <%= content_div("guests", "guests_form", "active", f) %>
+    <%= content_div("topic", "topics_form", f) %>
+    <%= content_div("food", "menu_form", f) %>
+    <%= content_div("message", "message_form", f) %>
+    <%= content_div("time", "time_form", f) %>
     <%= f.submit "Stash changes", class: "button alert small-6 columns meal-form-submit" , style: "border: 4px solid white" %>
     <input class="button alert small-6 columns meal-form-submit" style="border: 4px solid white" type="submit" value="Save meal" data-reveal-id="myModal" data-reveal>
   </div>

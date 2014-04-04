@@ -1,3 +1,4 @@
+console.log("before meals.js")
 // GENERAL PAGE FUNCTIONS
 
 var tabAround = function(){
@@ -279,3 +280,5 @@ $(document).ready(function(){
   $(window).load(fixBoxHeight());
   $(window).resize(fixBoxHeight);
 });
+
+console.log("after meals.js")
