@@ -26,6 +26,11 @@ class SessionsController < ApplicationController
         m_p.person_id = person.id
         m_p.save
       end
+      meal_recipes = MealRecipe.where(person_id: primary_keys)
+      meal_recipes.each do |m_r|
+        m_r.person_id = person_id
+        m_r.save
+      end
       records.destroy_all
     end
     person

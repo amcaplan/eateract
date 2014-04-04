@@ -22,7 +22,7 @@ class MealsController < ApplicationController
       session[:invite] = nil
       @person = Person.find_by(email: User.where(id: current_user).pluck(:email))
     else
-      session[:invite] ||= params[:invite]
+      session[:invite] = params[:invite] if params[:invite]
       @meal_person = MealPerson.find_by(token: session[:invite])
       @person = @meal_person.person if @meal_person
     end
@@ -126,7 +126,7 @@ class MealsController < ApplicationController
     else # Signing up for recipes
       person_id = current_user ? session[:user_id] : meal_person.person.id
       meal_recipes = MealRecipe.where(id: params[:meal_recipes])
-      meal_recipes.each{|mp| mp.person = person_id}.each(&:save)
+      meal_recipes.each{|mp| mp.person_id = person_id}.each(&:save)
       if current_user
         redirect_to Meal.find(params[:meal_id])
       else
@@ -167,9 +167,13 @@ class MealsController < ApplicationController
       people = people.select { |person|
         !person[:name].empty? && person[:email].match(/.+@.+\..+/i)
       }.map do |person|
-        existing_person = Person.find_by(email: person[:email])
-        if existing_person && (existing_person.user || existing_person.name == person[:name])
-          existing_person
+        existing_people = Person.where(email: person[:email]).all
+        if existing_people[0] && (existing_people.map(&:user).compact[0] ||
+          existing_people.map(&:name).include?(person[:name]))
+
+          existing_people.find do |existing_person|
+            existing_person.name == person[:name]
+          end
         else
           Person.create(name: person[:name], email: person[:email])
         end
@@ -196,7 +200,6 @@ class MealsController < ApplicationController
         @meal = Meal.create(meal_params)
       end
       @meal.people = people
-      binding.pry
       @meal.meal_people.each { |mp|
         mp.host_relationship = params[:person].find{|person|
           Person.find_by(name: person[:name], email: person[:email]).id == mp.person_id
@@ -207,7 +210,8 @@ class MealsController < ApplicationController
       Chronic.time_class = Time.zone
       @meal.time = Chronic.parse("#{params[:meal][:date]} #{params[:meal][:time]}")
 
-      params[:commit] = "Stash changes" if recipes.empty? || people.empty? || !@meal.time
+      params[:commit] = "Stash changes" if recipes.empty? || people.empty? ||
+        !@meal.time || !@meal.topic || @meal.links.empty?
     end
 
     def finish_meal
