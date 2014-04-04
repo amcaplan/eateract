@@ -23,6 +23,8 @@ var checkWidth = function() {
 };
 
 // FOR TOPICS FORM
+if (typeof(checkedLinks) == "undefined") checkLinks = [];
+if (typeof(recipesInfo) == "undefined") recipesInfo = {};
 
 var trackLinks = function() {
   $(".topic-links").on("change", "input", function(){
