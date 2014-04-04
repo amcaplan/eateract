@@ -46,8 +46,16 @@ ActiveRecord::Schema.define(version: 20140331164901) do
   add_index "meal_people", ["meal_id"], name: "index_meal_people_on_meal_id"
   add_index "meal_people", ["person_id"], name: "index_meal_people_on_person_id"
 
-# Could not dump table "meal_recipes" because of following NoMethodError
-#   undefined method `[]' for nil:NilClass
+  create_table "meal_recipes", force: true do |t|
+    t.integer  "meal_id"
+    t.integer  "recipe_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "person_id"
+  end
+
+  add_index "meal_recipes", ["meal_id"], name: "index_meal_recipes_on_meal_id"
+  add_index "meal_recipes", ["recipe_id"], name: "index_meal_recipes_on_recipe_id"
 
   create_table "meals", force: true do |t|
     t.datetime "time"
